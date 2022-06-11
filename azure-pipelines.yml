@@ -1,0 +1,18 @@
+trigger:
+- master # or the name of your main branch
+- feature/*
+
+steps:
+# Prepare Analysis Configuration task
+- task: SonarQubePrepare@5
+  inputs:
+    SonarQube: 'Vega-web-SONAR'
+    scannerMode: 'Other'
+    extraProperties: 'sonar.projectKey=YourProjectKey'
+
+# Publish Quality Gate Result task
+- task: SonarQubePublish@5
+  inputs:
+    pollingTimeoutSec: '300'
+
+Other (JavaScript, TypeScript, Go, 

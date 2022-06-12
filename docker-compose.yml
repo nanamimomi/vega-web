@@ -1,19 +1,26 @@
 version: '3'
 
 services:
-  backend:
+  vega-web-backend:
     build:
       context: ./server
-      dockerfile: ./Dockerfile
     image: "venus/quantum"
+    networks:
+      - vega-web-backend-net
+      - vega-spring-backend-net
     ports:
       - "8000:8000"
-  frontend:
+  vega-web-frontend:
     build:
       context: ./
-      dockerfile: ./Dockerfile
     image: "venus/theswitch"
+    networks:
+      - vega-web-backend-net
     ports:
       - "3000:3000"
-    links:
-      - "backend:be"
+networks:
+  vega-web-backend-net:
+    driver: bridge
+    name: "vega-web-backend-net"
+  vega-spring-backend-net:
+    external: true

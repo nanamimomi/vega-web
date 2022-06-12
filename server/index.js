@@ -16,7 +16,7 @@ app.use(express.json({limit: '50mb'}));
 
 if (process.env.NODE_ENV === 'development') {
   var corsOptions = {
-    origin: 'http://localhost:3000',
+    origin: process.env.PRESENTATION_URL,
     optionsSuccessStatus: 200
   };
   app.use(cors(corsOptions));
@@ -32,6 +32,6 @@ app.use("/api/venus", fileUploader)
 app.use("/api/venus/admin", adminPanel)
 
 app.listen(port, () => {
-  console.log(process.env.API_URL);
+  console.log("API_URL", process.env.API_URL);
   console.log(`Example app listening on port ${port}!`)
 });

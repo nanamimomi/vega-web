@@ -19,6 +19,13 @@ variables:
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
 
+- task: CmdLine@2
+  inputs:
+    script: |
+      npm install
+      npm run build
+      CI=true npm test
+
 stages:
 - stage: Build
   displayName: Build and push stage

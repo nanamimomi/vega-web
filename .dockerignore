@@ -1,0 +1,12 @@
+.idea
+.scannerwork
+node_modules
+npm-debug.log
+server
+.dockerignore
+.git
+.gitignore
+azure-pipelines*
+docker-compose.yml
+Dockerfile
+README.md

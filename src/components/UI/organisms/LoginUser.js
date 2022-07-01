@@ -19,12 +19,12 @@ const LoginUser = ({onSubmit}) => {
       		<Col className="mx-auto" xs={6}>
         		<Form onSubmit={submitForm}>
 	      			<Form.Group className="mb-3">
-	        			<Form.Label>USERNAME</Form.Label>
-	        			<Form.Control type="text" onChange={e => setUsername(e.target.value)}/>
+	        			<Form.Label id="username-label">USERNAME</Form.Label>
+	        			<Form.Control type="text" aria-labelledby="username-label" onChange={e => setUsername(e.target.value)}/>
 	      			</Form.Group>
 	      			<Form.Group className="mb-3">
-	        			<Form.Label>PASSWORD</Form.Label>
-	        			<Form.Control type="PASSWORD" onChange={e => setPassword(e.target.value)}/>
+	        			<Form.Label id="password-label">PASSWORD</Form.Label>
+	        			<Form.Control type="PASSWORD" aria-labelledby="password-label" onChange={e => setPassword(e.target.value)}/>
 	      			</Form.Group>
 	      			<Button variant="primary" type="submit" onClick={submitForm}>
 	        			Submit

@@ -16,9 +16,15 @@ app.use(express.json({limit: '50mb'}));
 
 if (process.env.NODE_ENV === 'development') {
   var corsOptions = {
-    origin: process.env.PRESENTATION_URL,
-    optionsSuccessStatus: 200
-  };
+    origin: function (origin, callback) {
+      if (process.env.PRESENTATION_URL.indexOf(origin) !== -1) {
+        callback(null, true)
+      } else {
+        callback(new Error('Not allowed by CORS'))
+      }
+    },
+    optionsSuccessStatus: 200,
+  }
   app.use(cors(corsOptions));
 }
 

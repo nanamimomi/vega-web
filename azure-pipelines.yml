@@ -28,6 +28,12 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps:
+    - task: CmdLine@2
+      inputs:
+        script: |
+          npm install
+          npm run build
+          CI=true npm test
     - task: Docker@2
       displayName: Build and push an image to container registry
       inputs:
@@ -36,4 +42,5 @@ stages:
         dockerfile: $(dockerfilePath)
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
+          latest
           $(tag)

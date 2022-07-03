@@ -41,6 +41,10 @@ const SecretManager = () => {
         setSecretCreationModalVisible(true);
     }
 
+    const closeSecretCreationModal = () => {
+        setSecretCreationModalVisible(false);
+    }
+
     const handleNewSecretSubmission = (evt) => {
         evt.preventDefault();
         let secret = {
@@ -54,8 +58,9 @@ const SecretManager = () => {
         closeSecretCreationModal();
     }
 
-    const closeSecretCreationModal = () => {
-        setSecretCreationModalVisible(false);
+    const handleCancelSecretCreation = (evt) => {
+        evt.preventDefault();
+        closeSecretCreationModal();
     }
 
     return (
@@ -71,14 +76,12 @@ const SecretManager = () => {
                     max={currDate}
                 />
             </div>
-            <Modal
-                close={closeSecretCreationModal}
-                isVisible={isSecretCreationModalVisible}
-            >
+            <Modal isVisible={isSecretCreationModalVisible}>
                 <SecretCreationForm
                     setName={setNewSecretName}
                     setText={setNewSecretText}
                     handleSubmit={handleNewSecretSubmission}
+                    handleCancel={handleCancelSecretCreation}
                 />
             </Modal>
             <SecretTable

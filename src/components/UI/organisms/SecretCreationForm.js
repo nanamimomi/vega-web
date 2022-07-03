@@ -1,7 +1,7 @@
 import React from "react";
 import {Button, Form} from "react-bootstrap";
 
-const SecretCreationForm = ({setName, setText, handleSubmit}) => {
+const SecretCreationForm = ({setName, setText, handleSubmit, handleCancel}) => {
     return (
         <div>
             <h2>New Secret</h2>
@@ -22,6 +22,13 @@ const SecretCreationForm = ({setName, setText, handleSubmit}) => {
                         onChange={(e) => setText(e.target.value)}
                     />
                 </Form.Group>
+                <Button
+                    variant={"primary"}
+                    type={"reset"}
+                    onClick={handleCancel}
+                >
+                    Cancel
+                </Button>
                 <Button
                     variant={"primary"}
                     type={"submit"}

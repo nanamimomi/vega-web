@@ -1,16 +1,12 @@
-import React, {useState} from "react";
+import React from "react";
 import {Table} from 'react-bootstrap'
 import TableNavButtons from "../molecules/TableNavButtons";
-import SecretTableRow from "../molecules/SecretTableRow";
 
-const SecretTable = ({page_size, maxNavButtons, secrets}) => {
-    const rows = secrets.map((secret) => <SecretTableRow {...secret}/>);
-    const numPages = Math.ceil(secrets.length / page_size);
-    const [currPage, setCurrPage] = useState(1);
+const SecretTable = (props) => {
 
     const rowRangeForCurrentPage = () => {
-        const start = (currPage - 1) * page_size;
-        const stop = start + Math.min(secrets.length - start, page_size);
+        const start = (props.currPage - 1) * props.page_size;
+        const stop = start + Math.min(props.rows.length - start, props.page_size);
         return [start, stop];
     }
 
@@ -24,14 +20,14 @@ const SecretTable = ({page_size, maxNavButtons, secrets}) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {rows.slice(...rowRangeForCurrentPage())}
+                    {props.rows.slice(...rowRangeForCurrentPage())}
                 </tbody>
             </Table>
             <TableNavButtons
-                currPage={currPage}
-                setCurrPage={setCurrPage}
-                numPages={numPages}
-                maxNavButtons={maxNavButtons}
+                currPage={props.currPage}
+                setCurrPage={props.setCurrPage}
+                numPages={props.numPages}
+                maxNavButtons={props.maxNavButtons}
             />
         </div>
     );

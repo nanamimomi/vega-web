@@ -4,6 +4,8 @@ import DateTimeRangePicker from "../UI/molecules/DateTimeRangePicker";
 import SecretTable from "../UI/organisms/SecretTable";
 import SecretTableRow from "../UI/molecules/SecretTableRow";
 import {getAllSecrets} from "../../service/SecretManager/SecretManager";
+import Modal from "../UI/atoms/Modal";
+import SecretCreationForm from "../UI/organisms/SecretCreationForm";
 
 const SECRET_TABLE_PAGE_SIZE = 10;
 const SECRET_TABLE_MAX_NAV_BUTTONS = 5;
@@ -29,15 +31,21 @@ const SecretManager = () => {
         setCurrPage(numPages);
     }
 
-    const addSecret = () => {
-        console.log("Add Secret Requested");
+    const [isSecretCreationModalVisible, setSecretCreationModalVisible] = useState(false);
+
+    const openSecretCreationModal = () => {
+        setSecretCreationModalVisible(true);
+    }
+
+    const closeSecretCreationModal = () => {
+        setSecretCreationModalVisible(false);
     }
 
     return (
         <SimplePageLayout>
             <h1>Secrets</h1>
             <div className={"d-flex justify-content-between"}>
-                <button onClick={addSecret}>Add Secret</button>
+                <button onClick={openSecretCreationModal}>Add Secret</button>
                 <DateTimeRangePicker
                     start={startDate}
                     setStart={setStartDate}
@@ -46,6 +54,9 @@ const SecretManager = () => {
                     max={currDate}
                 />
             </div>
+            {isSecretCreationModalVisible
+                ? <Modal close={closeSecretCreationModal} children={<SecretCreationForm/>}/>
+                : null}
             <SecretTable
                 page_size={SECRET_TABLE_PAGE_SIZE}
                 numPages={numPages}

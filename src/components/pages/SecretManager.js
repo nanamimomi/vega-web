@@ -6,6 +6,7 @@ import SecretTableRow from "../UI/molecules/SecretTableRow";
 import {getAllSecrets} from "../../service/SecretManager/SecretManager";
 import Modal from "../UI/atoms/Modal";
 import SecretCreationForm from "../UI/organisms/SecretCreationForm";
+import {createSecret} from "../../service/SecretManager/SecretManager";
 
 const SECRET_TABLE_PAGE_SIZE = 10;
 const SECRET_TABLE_MAX_NAV_BUTTONS = 5;
@@ -31,10 +32,26 @@ const SecretManager = () => {
         setCurrPage(numPages);
     }
 
+    const [newSecretName, setNewSecretName] = useState(null);
+    const [newSecretText, setNewSecretText] = useState(null);
+
     const [isSecretCreationModalVisible, setSecretCreationModalVisible] = useState(false);
 
     const openSecretCreationModal = () => {
         setSecretCreationModalVisible(true);
+    }
+
+    const handleNewSecretSubmission = (evt) => {
+        evt.preventDefault();
+        let secret = {
+            "name": newSecretName,
+            "date": new Date().toJSON(),
+            "text": newSecretText
+        }
+        createSecret(secret).then((res) => {
+            console.log("Response:", res);
+        })
+        closeSecretCreationModal();
     }
 
     const closeSecretCreationModal = () => {
@@ -54,7 +71,16 @@ const SecretManager = () => {
                     max={currDate}
                 />
             </div>
-            <Modal close={closeSecretCreationModal} isVisible={isSecretCreationModalVisible} children={<SecretCreationForm/>}/>
+            <Modal
+                close={closeSecretCreationModal}
+                isVisible={isSecretCreationModalVisible}
+            >
+                <SecretCreationForm
+                    setName={setNewSecretName}
+                    setText={setNewSecretText}
+                    handleSubmit={handleNewSecretSubmission}
+                />
+            </Modal>
             <SecretTable
                 page_size={SECRET_TABLE_PAGE_SIZE}
                 numPages={numPages}

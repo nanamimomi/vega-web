@@ -54,9 +54,7 @@ const SecretManager = () => {
                     max={currDate}
                 />
             </div>
-            {isSecretCreationModalVisible
-                ? <Modal close={closeSecretCreationModal} children={<SecretCreationForm/>}/>
-                : null}
+            <Modal close={closeSecretCreationModal} isVisible={isSecretCreationModalVisible} children={<SecretCreationForm/>}/>
             <SecretTable
                 page_size={SECRET_TABLE_PAGE_SIZE}
                 numPages={numPages}

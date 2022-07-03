@@ -10,17 +10,27 @@ const SecretTable = (props) => {
         return [start, stop];
     }
 
+    console.log("AAAAAAA")
+    console.log(props.rows.slice(...rowRangeForCurrentPage()))
+
+    const TableData = props.rows.slice(...rowRangeForCurrentPage()).map((row) => (
+        <tr>
+            <td>{row.props.name}</td>
+            <td>{row.props.date}</td>
+        </tr>
+    ))
+
     return (
         <div>
             <Table className={"fixed"} style={{marginTop: "10px", marginBottom: "0px"}}>
                 <thead>
                     <tr>
-                        <td style={{width: "400px"}}>Name</td>
-                        <td>Date created</td>
+                        <th style={{width: "400px"}}>Name</th>
+                        <th>Date created</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {props.rows.slice(...rowRangeForCurrentPage())}
+                    {TableData}
                 </tbody>
             </Table>
             <TableNavButtons

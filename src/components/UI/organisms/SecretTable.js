@@ -35,4 +35,4 @@ const SecretTable = (props) => {
   );
 };
 
-export default SecretTable;
+export default SecretTable

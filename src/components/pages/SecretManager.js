@@ -37,6 +37,14 @@ const SecretManager = () => {
     setCurrPage(numPages);
   }
 
+  const [newSecretName, setNewSecretName] = useState(null);
+  const [newSecretText, setNewSecretText] = useState(null);
+  const [newSecretFiles, setNewSecretFiles] = useState([]);
+  const newSecretFileFormData = new FormData();
+  for(let i = 0; i < newSecretFiles.length; i++) {
+      newSecretFileFormData.append("file", newSecretFiles[i]);
+  }
+
   const [isSecretCreationModalVisible, setSecretCreationModalVisible] =
     useState(false);
 
@@ -61,15 +69,26 @@ const SecretManager = () => {
     setDeleteModalVisible(false);
   };
 
-  const rows = secrets.map((secret) => (
-    <SecretTableRow
-      name={secret.name}
-      id={secret.id}
-      date={secret.date}
-      secret={secret.secret}
-      openDeleteModal={openDeleteModal}
-    />
-  ));
+  const handleNewSecretSubmission = (evt) => {
+    evt.preventDefault();
+    let secret = {
+        "name": newSecretName,
+        "date": new Date().toJSON(),
+        "text": newSecretText,
+        "files": newSecretFileFormData
+    }
+    createSecret(secret).then((res) => {
+        console.log("Response:", res);
+    })
+    closeSecretCreationModal();
+  }
+
+  const rows = secrets.map((secret) => <SecretTableRow {...secret} openDeleteModal={openDeleteModal}/>);
+
+  const handleCancelSecretCreation = (evt) => {
+      evt.preventDefault();
+      closeSecretCreationModal();
+  }
 
   return (
     <>
@@ -85,12 +104,21 @@ const SecretManager = () => {
             max={currDate}
           />
         </div>
-        {isSecretCreationModalVisible ? (
-          <Modal
-            close={closeSecretCreationModal}
-            children={<SecretCreationForm />}
-          />
-        ) : null}
+        
+        <Modal isVisible={isSecretCreationModalVisible}>
+            <SecretCreationForm
+                setName={setNewSecretName}
+                setText={setNewSecretText}
+                setFiles={setNewSecretFiles}
+                handleSubmit={handleNewSecretSubmission}
+                handleCancel={handleCancelSecretCreation}
+            />
+        </Modal>
+        <DeleteSecretModal
+          secret={clickedSecret}
+          close={closeDeleteModal}
+          show={isDeleteModalVisible}
+        />
         <SecretTable
           page_size={SECRET_TABLE_PAGE_SIZE}
           numPages={numPages}
@@ -100,11 +128,6 @@ const SecretManager = () => {
           setCurrPage={setCurrPage}
         />
       </SimplePageLayout>
-      <DeleteSecretModal
-        secret={clickedSecret}
-        close={closeDeleteModal}
-        show={isDeleteModalVisible}
-      />
     </>
   );
 };

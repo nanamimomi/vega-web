@@ -109,7 +109,7 @@ export function createSecret(secret) {
 }
 
 export function updateSecret(secret) {
-    // TODO: actually make the secret
-    console.log("Attempting to create secret", secret);
+    // TODO: actually update the secret
+    console.log("Attempting to update secret", secret);
     return Promise.resolve("Secret Updated Successfully");
 }

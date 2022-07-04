@@ -107,3 +107,9 @@ export function createSecret(secret) {
     console.log("Attempting to create secret", secret);
     return Promise.resolve("Secret Created Successfully");
 }
+
+export function updateSecret(secret) {
+    // TODO: actually make the secret
+    console.log("Attempting to create secret", secret);
+    return Promise.resolve("Secret Updated Successfully");
+}

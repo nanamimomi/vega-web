@@ -71,38 +71,40 @@ const SecretManager = () => {
   ));
 
   return (
-    <SimplePageLayout>
-      <h1>Secrets</h1>
-      <div className={"d-flex justify-content-between"}>
-        <button onClick={openSecretCreationModal}>Add Secret</button>
-        <DateTimeRangePicker
-          start={startDate}
-          setStart={setStartDate}
-          end={endDate}
-          setEnd={setEndDate}
-          max={currDate}
+    <>
+      <SimplePageLayout>
+        <h1>Secrets</h1>
+        <div className={"d-flex justify-content-between"}>
+          <button onClick={openSecretCreationModal}>Add Secret</button>
+          <DateTimeRangePicker
+            start={startDate}
+            setStart={setStartDate}
+            end={endDate}
+            setEnd={setEndDate}
+            max={currDate}
+          />
+        </div>
+        {isSecretCreationModalVisible ? (
+          <Modal
+            close={closeSecretCreationModal}
+            children={<SecretCreationForm />}
+          />
+        ) : null}
+        <SecretTable
+          page_size={SECRET_TABLE_PAGE_SIZE}
+          numPages={numPages}
+          maxNavButtons={SECRET_TABLE_MAX_NAV_BUTTONS}
+          rows={rows}
+          currPage={currPage}
+          setCurrPage={setCurrPage}
         />
-      </div>
-      {isSecretCreationModalVisible ? (
-        <Modal
-          close={closeSecretCreationModal}
-          children={<SecretCreationForm />}
-        />
-      ) : null}
+      </SimplePageLayout>
       <DeleteSecretModal
         secret={clickedSecret}
         close={closeDeleteModal}
         show={isDeleteModalVisible}
       />
-      <SecretTable
-        page_size={SECRET_TABLE_PAGE_SIZE}
-        numPages={numPages}
-        maxNavButtons={SECRET_TABLE_MAX_NAV_BUTTONS}
-        rows={rows}
-        currPage={currPage}
-        setCurrPage={setCurrPage}
-      />
-    </SimplePageLayout>
+    </>
   );
 };
 

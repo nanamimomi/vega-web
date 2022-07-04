@@ -2,14 +2,12 @@ import { React } from "react";
 import { Modal, Button } from "react-bootstrap";
 
 const DeleteSecretModal = ({ secret, close, show }) => {
-  console.log("delete secret modal");
-  console.log(secret);
   if (!secret) {
     return "";
   }
   return (
-    <Modal show={show}>
-      <Modal.Header>
+    <Modal show={show} onHide={close}>
+      <Modal.Header closeButton>
         <Modal.Title>Delete Secret</Modal.Title>
       </Modal.Header>
 

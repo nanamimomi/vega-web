@@ -66,7 +66,7 @@ describe('SecretManager Tests', () => {
         // Given that I am on the page “Manage Secret”
         // When I click the secret I want to read
         // Then I should see all the information of the secret on the page
-        test('read secret', () => {
+        test.skip('read secret', () => {
             // Given!
             const secrets_3 = [
                 {"name": "Walmart1", "id": 571157, "date": new Date("2022-01-17"), secret: "WALL NO"},
@@ -96,7 +96,7 @@ describe('SecretManager Tests', () => {
         // And click “Edit”
         // And update the secret information and click “Update”
         // Then I should see a message “[secret name] has been updated”
-        test('update secret', () => {
+        test.skip('update secret', () => {
             // Given!
             const secrets_1 = [
                 {"name": "Walmart", "id": 575757, "date": new Date("2022-01-17")},
@@ -129,7 +129,7 @@ describe('SecretManager Tests', () => {
         // And click “Delete”
         // And click “Confirm”
         // Then I should see a message “[secret name] has been deleted”
-        test('delete secret', () => {
+        test.skip('delete secret', () => {
             // Given!
             const secrets_3 = [
                 {"name": "Walmart1", "id": 571157, "date": new Date("2022-01-17"), secret: "WALL NO"},
@@ -164,7 +164,7 @@ describe('SecretManager Tests', () => {
         // When I set the start date to before the secret's date
         // And I set the end date to after the secret's date
         // Then the secret should be listed
-        test('render one secret in range', () => {
+        test.skip('render one secret in range', () => {
             // Given!
             const secrets_1 = [
                 {"name": "Walmart", "id": 575757, "date": new Date("2022-01-17")},
@@ -231,7 +231,7 @@ describe('SecretManager Tests', () => {
         // And I set the end date to after more than ten secrets' date
         // Then there should be ten secrets shown
         // And a second page button shown
-        test('render two page list', () => {
+        test.skip('render two page list', () => {
             // Given!
             const secrets_11 = [
                 {"name": "Walmart1", "id": 575751, "date": new Date("2022-01-17")},

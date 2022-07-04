@@ -1,49 +1,35 @@
-import { React, useState } from "react";
+import React from "react";
 import { Button } from "react-bootstrap";
 import {toHumanReadable} from "../../../utils/Dates";
 
-const SecretEntry = ({ secret }) => {
-  const [active, setActive] = useState(false);
+const SecretTableRow = ({ secret, handleShow, handleEdit, handleDelete }) => {
   return (
-    <>
-      <Button
-        variant="primary"
-        onClick={() => setActive(true)}
-        className={active ? "d-none" : null}
-      >
-        Show Secret
-      </Button>
-      <p className={!active ? "d-none" : null}>{secret}</p>
-    </>
-  );
-};
-
-const SecretTableRow = ({ name, id, date, secret, openEditModal, openDeleteModal }) => {
-  return (
-    <tr key={id}>
-      <td>{name}</td>
-      <td>{toHumanReadable(date)}</td>
+    <tr key={secret.secretID}>
+      <td>{secret.secretName}</td>
+      <td>{toHumanReadable(secret.dateCreated)}</td>
       <td>
-        <SecretEntry secret={secret} />
+        <Button
+            variant={"primary"}
+            type={"submit"}
+            onClick={() => handleShow(secret)}
+        >
+            Show
+        </Button>
       </td>
       <td>
         <Button
-          variant="warning"
-          style={{ float: "right" }}
-          onClick={() => {
-            openEditModal({ name, id, date, secret });
-          }}
+            variant={"primary"}
+            type={"submit"}
+            onClick={() => handleEdit(secret)}
         >
           Edit
         </Button>
       </td>
       <td>
         <Button
-          variant="warning"
-          style={{ float: "right" }}
-          onClick={() => {
-            openDeleteModal({ name, id, date, secret });
-          }}
+            variant={"primary"}
+            type={"submit"}
+            onClick={() => handleDelete(secret)}
         >
           Delete
         </Button>

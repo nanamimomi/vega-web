@@ -19,9 +19,9 @@ const SecretTable = (props) => {
           <tr>
             <th>Name</th>
             <th>Date created</th>
-            <th style={{ width: "400px" }}>Secret</th>
-            <th></th>
-            <th></th>
+            <th/>
+            <th/>
+            <th/>
           </tr>
         </thead>
         <tbody>{props.rows.slice(...rowRangeForCurrentPage())}</tbody>

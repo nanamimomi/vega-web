@@ -9,9 +9,6 @@ const SecretTable = (props) => {
     return [start, stop];
   };
 
-  console.log("AAAAAAA");
-  console.log(props.rows.slice(...rowRangeForCurrentPage()));
-
   return (
     <div>
       <Table
@@ -20,20 +17,13 @@ const SecretTable = (props) => {
       >
         <thead>
           <tr>
-            <th style={{ width: "400px" }}>Name</th>
+            <th>Name</th>
             <th>Date created</th>
+            <th style={{ width: "400px" }}>Secret</th>
+            <th></th>
           </tr>
         </thead>
-        <tbody>
-          {props.rows.map(function (row) {
-            return (
-              <tr>
-                <td>{row.props.name}</td>
-                <td>{row.props.date.toDateString()}</td>
-              </tr>
-            );
-          })}
-        </tbody>
+        <tbody>{props.rows.slice(...rowRangeForCurrentPage())}</tbody>
       </Table>
       <TableNavButtons
         currPage={props.currPage}

@@ -1,75 +1,64 @@
-import React, { useState } from "react";
+import React, {useContext, useState, useEffect} from "react";
 import SimplePageLayout from "../templates/SimplePageLayout";
 import DateTimeRangePicker from "../UI/molecules/DateTimeRangePicker";
 import SecretTable from "../UI/organisms/SecretTable";
 import SecretTableRow from "../UI/molecules/SecretTableRow";
-import { getAllSecrets } from "../../service/SecretManager/SecretManager";
+import { getAllSecrets, createSecret, updateSecret, deleteSecret } from "../../service/SecretManager/SecretManager";
 import Modal from "../UI/atoms/Modal";
 import SecretCreationForm from "../UI/organisms/SecretCreationForm";
 import SecretEditForm from "../UI/organisms/SecretEditForm";
-import DeleteSecretModal from "../UI/organisms/DeleteSecretModal";
-import { createSecret, updateSecret } from "../../service/SecretManager/SecretManager";
+import SecretDeletionForm from "../UI/organisms/SecretDeletionForm";
+import SecretDetailsForm from "../UI/organisms/SecretDetailsForm";
+import {UserContext} from "../../auth/UserProvider";
 
 const SECRET_TABLE_PAGE_SIZE = 10;
 const SECRET_TABLE_MAX_NAV_BUTTONS = 5;
 
-const SecretManager = ({all_secrets = null, now_date = new Date(), then_date = new Date()}) => {
-  const currDate = now_date; //new Date();
-  const oneMonthAgo = then_date; //new Date();
-  oneMonthAgo.setMonth(currDate.getMonth() - 1);
-  const [endDate, setEndDate] = useState(currDate);
-  const [startDate, setStartDate] = useState(oneMonthAgo);
+const SecretManager = () => {
+    const currDate = new Date();
+    const oneMonthAgo = new Date();
+    oneMonthAgo.setMonth(currDate.getMonth() - 1);
+    const [endDate, setEndDate] = useState(currDate);
+    const [startDate, setStartDate] = useState(oneMonthAgo);
 
-  const getDisplayedSecrets = (start, end) => {
-    if (all_secrets == null) {
-      return getAllSecrets()
-          .filter((s) => start <= s.date && s.date <= end)
-          .sort((a, b) => b.date - a.date);
+    const {user} = useContext(UserContext)
+
+    const [secrets, setSecrets] = useState([]);
+    useEffect(() => {
+        getAllSecrets(user.jwt).then(setSecrets).catch(e => {});
+    }, [user]);
+    const displayedSecrets = secrets
+        .filter((s) => startDate <= s.dateCreated && s.dateCreated <= endDate)
+        .sort((a, b) => b.dateCreated - a.dateCreated)
+    const numPages = Math.max(1, Math.ceil(displayedSecrets.length / SECRET_TABLE_PAGE_SIZE));
+    const [currPage, setCurrPage] = useState(1);
+    if(currPage > numPages) {
+        setCurrPage(numPages);
     }
-    else {
-      return all_secrets
-          .filter((s) => start <= s.date && s.date <= end)
-          .sort((a, b) => b.date - a.date);
-    }
-  };
-
-  const secrets = getDisplayedSecrets(startDate, endDate);
-
-  const numPages = Math.max(
-    1,
-    Math.ceil(secrets.length / SECRET_TABLE_PAGE_SIZE)
-  );
-
-  const [currPage, setCurrPage] = useState(1);
-  if (currPage > numPages) {
-    setCurrPage(numPages);
-  }
 
   const [newSecretName, setNewSecretName] = useState(null);
   const [newSecretText, setNewSecretText] = useState(null);
-  const [newSecretFiles, setNewSecretFiles] = useState([]);
+  const [newSecretFile, setNewSecretFile] = useState(null);
   const newSecretFileFormData = new FormData();
-  for(let i = 0; i < newSecretFiles.length; i++) {
-      newSecretFileFormData.append("file", newSecretFiles[i]);
+  if(newSecretFile) {
+      newSecretFileFormData.append("file", newSecretFile[0]);
   }
 
-  const [isSecretCreationModalVisible, setSecretCreationModalVisible] =
-    useState(false);
+  const [isSecretCreationModalVisible, setSecretCreationModalVisible] = useState(false);
+  const [editSecretName, setEditSecretName] = useState(null);
+  const [editSecretText, setEditSecretText] = useState(null);
+  const [editSecretFile, setEditSecretFile] = useState(null);
+  const editSecretFileFormData = new FormData();
+  if(editSecretFile) {
+      editSecretFileFormData.append("file", editSecretFile[0]);
+  }
 
-    const [editSecretName, setEditSecretName] = useState(null);
-    const [editSecretText, setEditSecretText] = useState(null);
-    const [editSecretFiles, setEditSecretFiles] = useState([]);
-    const editSecretFileFormData = new FormData();
-    for(let i = 0; i < editSecretFiles.length; i++) {
-        editSecretFileFormData.append("file", editSecretFiles[i]);
-    }
-  
-    const [isSecretEditModalVisible, setSecretEditModalVisible] =
-      useState(false);
+  const [isSecretEditModalVisible, setSecretEditModalVisible] = useState(false);
 
-  const [isDeleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [isSecretDeletionModalVisible, setSecretDeletionModalVisible] = useState(false);
+  const [selectedSecret, setSelectedSecret] = useState(null);
 
-  const [clickedSecret, setClickedSecret] = useState(null);
+  const [isSecretDetailsModalVisible, setSecretDetailsModalVisible] = useState(false);
 
   const openSecretCreationModal = () => {
     setSecretCreationModalVisible(true);
@@ -80,7 +69,7 @@ const SecretManager = ({all_secrets = null, now_date = new Date(), then_date = n
   };
 
   const openEditModal = (s) => {
-    setClickedSecret(s);
+    setSelectedSecret(s);
     setSecretEditModalVisible(true);
   };
 
@@ -89,48 +78,91 @@ const SecretManager = ({all_secrets = null, now_date = new Date(), then_date = n
   };
 
   const openDeleteModal = (s) => {
-    setClickedSecret(s);
-    setDeleteModalVisible(true);
+    setSelectedSecret(s);
+    setSecretDeletionModalVisible(true);
   };
 
   const closeDeleteModal = () => {
-    setDeleteModalVisible(false);
+    setSecretDeletionModalVisible(false);
   };
+
+  const openSecretDetailsModal = (s) => {
+      setSelectedSecret(s);
+      setSecretDetailsModalVisible(true);
+  }
+
+  const closeSecretDetailsModal = () => {
+      setSecretDetailsModalVisible(false);
+  }
 
   const handleNewSecretSubmission = (evt) => {
     evt.preventDefault();
     let secret = {
         "name": newSecretName,
-        "date": new Date().toJSON(),
         "text": newSecretText,
-        "files": newSecretFileFormData
     }
-    createSecret(secret).then((res) => {
-        console.log("Response:", res);
-    })
+    createSecret(secret, user.jwt)
+        .then((res) => {console.log("Response:", res);})
+        .then(() => getAllSecrets(user.jwt))
+        .then(setSecrets)
+        .catch(e => {});
     closeSecretCreationModal();
   }
 
-  const handleEditSecretSubmission = (evt) => {
+  const handleCancelSecretCreation = (evt) => {
+    evt.preventDefault();
+    closeSecretCreationModal();
+  }
+
+  const handleSecretEditSubmission = (evt) => {
     evt.preventDefault();
     let secret = {
-        "name": editSecretName,
-        "date": new Date().toJSON(),
+        "secretName": editSecretName,
+        "dateCreated": new Date().toJSON(),
         "text": editSecretText,
-        "files": editSecretFileFormData
     }
     updateSecret(secret).then((res) => {
         console.log("Response:", res);
     })
     closeEditModal();
+      getAllSecrets(user.jwt).then(setSecrets).catch(e => {});
   }
 
-  const rows = secrets.map((secret) => <SecretTableRow {...secret} openEditModal={openEditModal} openDeleteModal={openDeleteModal}/>);
+  const handleCancelSecretEdit = (evt) => {
+    evt.preventDefault();
+    closeEditModal();
+  }
 
-  const handleCancelSecretCreation = (evt) => {
+  const handleSecretDeletion = (evt) => {
+    evt.preventDefault();
+    let secret = {
+      "id": selectedSecret.secretID
+    };
+    deleteSecret(secret).then(res => {console.log("Response:", res);});
+    closeDeleteModal();
+      getAllSecrets(user.jwt).then(setSecrets).catch(e => {});
+  }
+
+  const handleCancelSecretDeletion = (evt) => {
       evt.preventDefault();
-      closeSecretCreationModal();
+      closeDeleteModal();
   }
+
+  const handleCloseSecretDetails = (evt) => {
+      evt.preventDefault();
+      closeSecretDetailsModal();
+  }
+
+  const rows = displayedSecrets.map(
+      (secret) => (
+          <SecretTableRow
+              secret={secret}
+              handleShow={openSecretDetailsModal}
+              handleEdit={openEditModal}
+              handleDelete={openDeleteModal}
+          />
+      )
+  );
 
   return (
     <>
@@ -151,7 +183,7 @@ const SecretManager = ({all_secrets = null, now_date = new Date(), then_date = n
             <SecretCreationForm
                 setName={setNewSecretName}
                 setText={setNewSecretText}
-                setFiles={setNewSecretFiles}
+                setFile={setNewSecretFile}
                 handleSubmit={handleNewSecretSubmission}
                 handleCancel={handleCancelSecretCreation}
             />
@@ -160,16 +192,24 @@ const SecretManager = ({all_secrets = null, now_date = new Date(), then_date = n
             <SecretEditForm
                 setName={setEditSecretName}
                 setText={setEditSecretText}
-                setFiles={setEditSecretFiles}
-                handleSubmit={handleEditSecretSubmission}
-                handleCancel={closeDeleteModal}
+                setFile={setEditSecretFile}
+                handleSubmit={handleSecretEditSubmission}
+                handleCancel={handleCancelSecretEdit}
             />
         </Modal>
-        <DeleteSecretModal
-          secret={clickedSecret}
-          close={closeDeleteModal}
-          show={isDeleteModalVisible}
-        />
+        <Modal isVisible={isSecretDeletionModalVisible}>
+          <SecretDeletionForm
+              secret={selectedSecret}
+              handleSubmit={handleSecretDeletion}
+              handleCancel={handleCancelSecretDeletion}
+          />
+        </Modal>
+        <Modal isVisible={isSecretDetailsModalVisible}>
+            <SecretDetailsForm
+                secret={selectedSecret}
+                handleClose={handleCloseSecretDetails}
+            />
+        </Modal>
         <SecretTable
           page_size={SECRET_TABLE_PAGE_SIZE}
           numPages={numPages}

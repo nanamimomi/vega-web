@@ -32,14 +32,12 @@ describe('SecretManager Tests', () => {
         // Then I should see message “[secret name] has been created”
         // And [secret name] should be visible on the secret list
         test('create new secret', () => {
-            // Given!
+            // Given secret name Walmart
             const secrets_1 = [
                 {"name": "Walmart", "id": 575757, "date": new Date("2022-01-17")},
             ]
 
             const {container} = render(<SecretManager all_secrets={secrets_1} now_date={new Date("2022-01-20")} then_date={new Date("2022-01-10")}/>);
-
-
 
         });
 

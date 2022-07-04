@@ -101,3 +101,9 @@ export function getAllSecrets() {
   }
   return secrets;
 }
+
+export function createSecret(secret) {
+    // TODO: actually make the secret
+    console.log("Attempting to create secret", secret);
+    return Promise.resolve("Secret Created Successfully");
+}

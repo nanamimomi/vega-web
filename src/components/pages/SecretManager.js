@@ -7,6 +7,7 @@ import { getAllSecrets } from "../../service/SecretManager/SecretManager";
 import Modal from "../UI/atoms/Modal";
 import SecretCreationForm from "../UI/organisms/SecretCreationForm";
 import DeleteSecretModal from "../UI/organisms/DeleteSecretModal";
+import { createSecret } from "../../service/SecretManager/SecretManager";
 
 const SECRET_TABLE_PAGE_SIZE = 10;
 const SECRET_TABLE_MAX_NAV_BUTTONS = 5;

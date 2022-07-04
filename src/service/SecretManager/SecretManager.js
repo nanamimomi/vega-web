@@ -113,3 +113,9 @@ export function updateSecret(secret) {
     console.log("Attempting to update secret", secret);
     return Promise.resolve("Secret Updated Successfully");
 }
+
+export function deleteSecret(secret) {
+    // TODO: actually delete the secret
+    console.log("Attempting to delete secret", secret);
+    return Promise.resolve("Secret Deleted Successfully");
+}

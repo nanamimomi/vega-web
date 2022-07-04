@@ -17,7 +17,7 @@ const SecretEntry = ({ secret }) => {
   );
 };
 
-const SecretTableRow = ({ name, id, date, secret }) => {
+const SecretTableRow = ({ name, id, date, secret, openDeleteModal }) => {
   return (
     <tr key={id}>
       <td>{name}</td>
@@ -26,7 +26,13 @@ const SecretTableRow = ({ name, id, date, secret }) => {
         <SecretEntry secret={secret} />
       </td>
       <td>
-        <Button variant="warning" style={{ float: "right" }}>
+        <Button
+          variant="warning"
+          style={{ float: "right" }}
+          onClick={() => {
+            openDeleteModal({ name, id, date, secret });
+          }}
+        >
           Delete
         </Button>
       </td>

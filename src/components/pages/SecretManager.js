@@ -12,17 +12,45 @@ import { createSecret } from "../../service/SecretManager/SecretManager";
 const SECRET_TABLE_PAGE_SIZE = 10;
 const SECRET_TABLE_MAX_NAV_BUTTONS = 5;
 
+/* Allow
 const SecretManager = () => {
-  const currDate = new Date();
-  const oneMonthAgo = new Date();
+
+  const currDate = now_date;
+  const oneMonthAgo = then_date;
   oneMonthAgo.setMonth(currDate.getMonth() - 1);
   const [endDate, setEndDate] = useState(currDate);
   const [startDate, setStartDate] = useState(oneMonthAgo);
 
   const getDisplayedSecrets = (start, end) => {
-    return getAllSecrets()
-      .filter((s) => start <= s.date && s.date <= end)
-      .sort((a, b) => b.date - a.date);
+    // Default
+    if (all_secrets == null) {
+      return getAllSecrets()
+          .filter((s) => start <= s.date && s.date <= end)
+          .sort((a, b) => b.date - a.date);
+    }
+    else {
+      return all_secrets.filter((s) => start <= s.date && s.date <= end).sort((a, b) => b.date - a.date);
+    }
+  }*/
+
+const SecretManager = ({all_secrets = null, now_date = new Date(), then_date = new Date()}) => {
+  const currDate = now_date; //new Date();
+  const oneMonthAgo = then_date; //new Date();
+  oneMonthAgo.setMonth(currDate.getMonth() - 1);
+  const [endDate, setEndDate] = useState(currDate);
+  const [startDate, setStartDate] = useState(oneMonthAgo);
+
+  const getDisplayedSecrets = (start, end) => {
+    if (all_secrets == null) {
+      return getAllSecrets()
+          .filter((s) => start <= s.date && s.date <= end)
+          .sort((a, b) => b.date - a.date);
+    }
+    else {
+      return all_secrets
+          .filter((s) => start <= s.date && s.date <= end)
+          .sort((a, b) => b.date - a.date);
+    }
   };
 
   const secrets = getDisplayedSecrets(startDate, endDate);

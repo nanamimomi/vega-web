@@ -1,7 +1,7 @@
 import React from "react";
 import {Button, Form} from "react-bootstrap";
 
-const SecretCreationForm = ({setName, setText, handleSubmit, handleCancel}) => {
+const SecretCreationForm = ({setName, setText, setFiles, handleSubmit, handleCancel}) => {
     return (
         <div>
             <h2>New Secret</h2>
@@ -20,6 +20,15 @@ const SecretCreationForm = ({setName, setText, handleSubmit, handleCancel}) => {
                         as={"textarea"}
                         rows={5}
                         onChange={(e) => setText(e.target.value)}
+                    />
+                </Form.Group>
+                <Form.Group className={"mb-3"} controlId={"secretCreationForm.SecretFileUpload"}>
+                    <Form.Label>Files</Form.Label>
+                    <Form.Control
+                        as={"input"}
+                        type={"file"}
+                        multiple
+                        onChange={(e) => setFiles(e.target.files)}
                     />
                 </Form.Group>
                 <Button

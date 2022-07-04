@@ -34,6 +34,11 @@ const SecretManager = () => {
 
     const [newSecretName, setNewSecretName] = useState(null);
     const [newSecretText, setNewSecretText] = useState(null);
+    const [newSecretFiles, setNewSecretFiles] = useState([]);
+    const newSecretFileFormData = new FormData();
+    for(let i = 0; i < newSecretFiles.length; i++) {
+        newSecretFileFormData.append("file", newSecretFiles[i]);
+    }
 
     const [isSecretCreationModalVisible, setSecretCreationModalVisible] = useState(false);
 
@@ -50,7 +55,8 @@ const SecretManager = () => {
         let secret = {
             "name": newSecretName,
             "date": new Date().toJSON(),
-            "text": newSecretText
+            "text": newSecretText,
+            "files": newSecretFileFormData
         }
         createSecret(secret).then((res) => {
             console.log("Response:", res);
@@ -80,6 +86,7 @@ const SecretManager = () => {
                 <SecretCreationForm
                     setName={setNewSecretName}
                     setText={setNewSecretText}
+                    setFiles={setNewSecretFiles}
                     handleSubmit={handleNewSecretSubmission}
                     handleCancel={handleCancelSecretCreation}
                 />

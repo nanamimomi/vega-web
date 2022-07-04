@@ -8,6 +8,7 @@ import Modal from "../UI/atoms/Modal";
 import SecretCreationForm from "../UI/organisms/SecretCreationForm";
 import SecretEditForm from "../UI/organisms/SecretEditForm";
 import SecretDeletionForm from "../UI/organisms/SecretDeletionForm";
+import SecretDetailsForm from "../UI/organisms/SecretDetailsForm";
 import { createSecret, updateSecret, deleteSecret } from "../../service/SecretManager/SecretManager";
 
 const SECRET_TABLE_PAGE_SIZE = 10;
@@ -46,23 +47,21 @@ const SecretManager = () => {
       newSecretFileFormData.append("file", newSecretFiles[i]);
   }
 
-  const [isSecretCreationModalVisible, setSecretCreationModalVisible] =
-    useState(false);
-  
-  
-    const [editSecretName, setEditSecretName] = useState(null);
-    const [editSecretText, setEditSecretText] = useState(null);
-    const [editSecretFiles, setEditSecretFiles] = useState([]);
-    const editSecretFileFormData = new FormData();
-    for(let i = 0; i < editSecretFiles.length; i++) {
-        editSecretFileFormData.append("file", editSecretFiles[i]);
-    }
-  
-    const [isSecretEditModalVisible, setSecretEditModalVisible] =
-      useState(false);
+  const [isSecretCreationModalVisible, setSecretCreationModalVisible] = useState(false);
+  const [editSecretName, setEditSecretName] = useState(null);
+  const [editSecretText, setEditSecretText] = useState(null);
+  const [editSecretFiles, setEditSecretFiles] = useState([]);
+  const editSecretFileFormData = new FormData();
+  for(let i = 0; i < editSecretFiles.length; i++) {
+    editSecretFileFormData.append("file", editSecretFiles[i]);
+  }
+
+  const [isSecretEditModalVisible, setSecretEditModalVisible] = useState(false);
 
   const [isSecretDeletionModalVisible, setSecretDeletionModalVisible] = useState(false);
   const [selectedSecret, setSelectedSecret] = useState(null);
+
+  const [isSecretDetailsModalVisible, setSecretDetailsModalVisible] = useState(false);
 
   const openSecretCreationModal = () => {
     setSecretCreationModalVisible(true);
@@ -89,6 +88,15 @@ const SecretManager = () => {
   const closeDeleteModal = () => {
     setSecretDeletionModalVisible(false);
   };
+
+  const openSecretDetailsModal = (s) => {
+      setSelectedSecret(s);
+      setSecretDetailsModalVisible(true);
+  }
+
+  const closeSecretDetailsModal = () => {
+      setSecretDetailsModalVisible(false);
+  }
 
   const handleNewSecretSubmission = (evt) => {
     evt.preventDefault();
@@ -142,7 +150,21 @@ const SecretManager = () => {
       closeDeleteModal();
   }
 
-  const rows = secrets.map((secret) => <SecretTableRow {...secret} openEditModal={openEditModal} openDeleteModal={openDeleteModal}/>);
+  const handleCloseSecretDetails = (evt) => {
+      evt.preventDefault();
+      closeSecretDetailsModal();
+  }
+
+  const rows = secrets.map(
+      (secret) => (
+          <SecretTableRow
+              secret={secret}
+              handleShow={openSecretDetailsModal}
+              handleEdit={openEditModal}
+              handleDelete={openDeleteModal}
+          />
+      )
+  );
 
   return (
     <>
@@ -183,6 +205,12 @@ const SecretManager = () => {
               handleSubmit={handleSecretDeletion}
               handleCancel={handleCancelSecretDeletion}
           />
+        </Modal>
+        <Modal isVisible={isSecretDetailsModalVisible}>
+            <SecretDetailsForm
+                secret={selectedSecret}
+                handleClose={handleCloseSecretDetails}
+            />
         </Modal>
         <SecretTable
           page_size={SECRET_TABLE_PAGE_SIZE}

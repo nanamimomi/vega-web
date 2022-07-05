@@ -55,8 +55,7 @@ const SecretManager = ({all_secrets = null, now_date = new Date(), then_date = n
 
   const [isSecretCreationModalVisible, setSecretCreationModalVisible] =
     useState(false);
-  
-  
+
     const [editSecretName, setEditSecretName] = useState(null);
     const [editSecretText, setEditSecretText] = useState(null);
     const [editSecretFiles, setEditSecretFiles] = useState([]);

@@ -3,7 +3,7 @@ import {Button, Form} from "react-bootstrap";
 
 const SecretEditForm = ({setName, setText, setFiles, handleSubmit, handleCancel}) => {
     return (
-        <div>
+        <div data-testid = "edit-id">
             <h2>Edit Secret</h2>
             <Form>
                 <Form.Group className={"mb-3"} controlId={"secretEditForm.SecretNameInput"}>

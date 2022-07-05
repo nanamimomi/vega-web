@@ -3,6 +3,18 @@ import user from "@testing-library/user-event"
 import SecretManager from "../components/pages/SecretManager";
 import SecretTable from "../components/UI/organisms/SecretTable";
 import React from "react";
+import SecretEditForm from "../components/UI/organisms/SecretEditForm";
+
+//const tableMock = jest.mock('../components/UI/organisms/SecretTable')
+
+/*<SecretTable
+            page_size={SECRET_TABLE_PAGE_SIZE}
+            numPages={numPages}
+            maxNavButtons={SECRET_TABLE_MAX_NAV_BUTTONS}
+            rows={rows}
+            currPage={currPage}
+            setCurrPage={setCurrPage}
+        />*/
 
 // Well this is bad testing, since I've got so many asserts per test, but hey, I can't be bothered to split it up
 
@@ -20,6 +32,14 @@ describe('SecretManager Tests', () => {
         // Then I should see message “[secret name] has been created”
         // And [secret name] should be visible on the secret list
         test('create new secret', () => {
+            // Given!
+            const secrets_1 = [
+                {"name": "Walmart", "id": 575757, "date": new Date("2022-01-17")},
+            ]
+
+            const {container} = render(<SecretManager all_secrets={secrets_1} now_date={new Date("2022-01-20")} then_date={new Date("2022-01-10")}/>);
+
+
 
         });
 
@@ -30,7 +50,7 @@ describe('SecretManager Tests', () => {
         // And click “Create”
         // Then I should see message “[area name] required”
         test('failed create new secret', () => {
-
+            // Functionality not present
         });
 
         // Scenario: User creates a secret unsuccessfully (maximum limit reached)
@@ -41,7 +61,7 @@ describe('SecretManager Tests', () => {
         // Then I should see an error message “You cannot create any more secrets.
         //      Please delete some old secrets or contact an admin for more information”
         test('failed too many new secret', () => {
-
+            // Functionality not present
         });
 
         // Scenario: User reads a secret entry
@@ -49,7 +69,27 @@ describe('SecretManager Tests', () => {
         // When I click the secret I want to read
         // Then I should see all the information of the secret on the page
         test('read secret', () => {
+            // Given!
+            const secrets_3 = [
+                {"name": "Walmart1", "id": 571157, "date": new Date("2022-01-17"), secret: "WALL NO"},
+                {"name": "Walmart2", "id": 572257, "date": new Date("2022-01-17"), secret: "WALL YES"},
+                {"name": "Walmart3", "id": 573357, "date": new Date("2022-01-17"), secret: "WALL... MAYBE?"}
+            ]
 
+            const {container} = render(<SecretManager all_secrets={secrets_3} now_date={new Date("2022-01-20")} then_date={new Date("2022-01-10")}/>);
+
+            // Should not be able to see the secret yet
+            expect(screen.queryByText("WALL NO")).toBeNull();
+
+            // There should only be three Show Secret buttons visible
+            const delete_buttons = screen.getAllByRole("button", {name: "Show Secret"});
+            expect(delete_buttons.length).toBe(3);
+
+            // When!
+            user.click(delete_buttons[0]);
+
+            // Then!
+            expect(screen.getByText("WALL NO")).toBeInTheDocument();
         });
 
         // Scenario: User updates a secret entry
@@ -59,7 +99,30 @@ describe('SecretManager Tests', () => {
         // And update the secret information and click “Update”
         // Then I should see a message “[secret name] has been updated”
         test('update secret', () => {
+            // Given!
+            const secrets_1 = [
+                {"name": "Walmart", "id": 575757, "date": new Date("2022-01-17")},
+            ]
 
+            /*<SecretEditForm
+                setName={setEditSecretName}
+                setText={setEditSecretText}
+                setFiles={setEditSecretFiles}
+                handleSubmit={handleEditSecretSubmission}
+                handleCancel={closeDeleteModal}
+            />*/
+
+            const {container} = render(<SecretManager all_secrets={secrets_1} now_date={new Date("2022-01-20")} then_date={new Date("2022-01-10")}/>);
+
+            // Should only be one edit button present
+            const edit_button = screen.getByRole("button", {name: "Edit"});
+
+            user.click(edit_button)
+
+            //const wrapper = shallow(<ModalContainer />);
+            //expect(wrapper.find(Modal)).toHaveLength(1);
+
+            expect(screen.getByClass("")).toBeInTheDocument();
         });
 
         // Scenario: User deletes a secret entry
@@ -69,7 +132,25 @@ describe('SecretManager Tests', () => {
         // And click “Confirm”
         // Then I should see a message “[secret name] has been deleted”
         test('delete secret', () => {
+            // Given!
+            const secrets_3 = [
+                {"name": "Walmart1", "id": 571157, "date": new Date("2022-01-17"), secret: "WALL NO"},
+                {"name": "Walmart2", "id": 572257, "date": new Date("2022-01-17"), secret: "WALL YES"},
+                {"name": "Walmart3", "id": 573357, "date": new Date("2022-01-17"), secret: "WALL... MAYBE?"}
+            ]
 
+            const {container} = render(<SecretManager all_secrets={secrets_3} now_date={new Date("2022-01-20")} then_date={new Date("2022-01-10")}/>);
+
+            expect(screen.queryByText("WALL NO")).toBeNull();
+
+            const delete_buttons = screen.getAllByRole("button", {name: "Show Secret"});
+            expect(delete_buttons.length).toBe(3);
+
+            // When!
+            user.click(delete_buttons[0]);
+
+            // Then!
+            expect(screen.getByText("WALL NO")).toBeInTheDocument();
         });
 
         //endof CRUD Ops Tests
@@ -79,15 +160,6 @@ describe('SecretManager Tests', () => {
     // Description: Filter secrets by date range
     //   By choosing a start and end date, only secrets created on dates within the range are shown in the table.
     describe('SecretManager Date Filter Tests', () => {
-
-        /*<SecretTable
-            page_size={SECRET_TABLE_PAGE_SIZE}
-            numPages={numPages}
-            maxNavButtons={SECRET_TABLE_MAX_NAV_BUTTONS}
-            rows={rows}
-            currPage={currPage}
-            setCurrPage={setCurrPage}
-        />*/
 
         // Scenario: A user filters by date to view the only secret they have
         // Given I have one secret

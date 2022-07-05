@@ -135,12 +135,12 @@ const SecretManager = () => {
 
   const handleSecretDeletion = (evt) => {
     evt.preventDefault();
-    let secret = {
-      "id": selectedSecret.secretID
-    };
-    deleteSecret(secret).then(res => {console.log("Response:", res);});
+    deleteSecret(selectedSecret.secretID, user.jwt)
+        .then((res) => {console.log("Response:", res);})
+        .then(() => getAllSecrets(user.jwt))
+        .then(setSecrets)
+        .catch(e => {});
     closeDeleteModal();
-      getAllSecrets(user.jwt).then(setSecrets).catch(e => {});
   }
 
   const handleCancelSecretDeletion = (evt) => {

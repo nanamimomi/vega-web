@@ -1,14 +1,93 @@
 import { render, screen } from '@testing-library/react'
 import user from "@testing-library/user-event"
 import SecretManager from "../components/pages/SecretManager";
+import SecretTable from "../components/UI/organisms/SecretTable";
+import React from "react";
 
 // Well this is bad testing, since I've got so many asserts per test, but hey, I can't be bothered to split it up
 
 describe('SecretManager Tests', () => {
 
-    // Feature: Filter Secrets By Date Range
-    // Description: By choosing a start and end date, only secrets created on dates within the range are shown in the table.
+    // Feature: Secret Entries CRUD Operations
+    // Description: Allow user to Create, Read, Update, and Delete secrets
+    describe('SecretManager CRUD Ops Tests', () => {
+
+        // Scenario: User creates a secret successfully
+        // Given that I am on the page “Manage Secret”
+        // When I click “Create a Secret”
+        // And supply with all the information
+        // And click “Create”
+        // Then I should see message “[secret name] has been created”
+        // And [secret name] should be visible on the secret list
+        test('create new secret', () => {
+
+        });
+
+        // Scenario: User creates a secret unsuccessfully
+        // Given that I am on the page “Manage Secret”
+        // When I click “Create a Secret”
+        // And left 1 or more area empty
+        // And click “Create”
+        // Then I should see message “[area name] required”
+        test('failed create new secret', () => {
+
+        });
+
+        // Scenario: User creates a secret unsuccessfully (maximum limit reached)
+        // Given that I am on the page “Manage Secret”
+        // When I click “Create a Secret”
+        // And supply with all the information
+        // And click “Create”
+        // Then I should see an error message “You cannot create any more secrets.
+        //      Please delete some old secrets or contact an admin for more information”
+        test('failed too many new secret', () => {
+
+        });
+
+        // Scenario: User reads a secret entry
+        // Given that I am on the page “Manage Secret”
+        // When I click the secret I want to read
+        // Then I should see all the information of the secret on the page
+        test('read secret', () => {
+
+        });
+
+        // Scenario: User updates a secret entry
+        // Given that I am on the page “Manage Secret”
+        // When I click the secret I want to update
+        // And click “Edit”
+        // And update the secret information and click “Update”
+        // Then I should see a message “[secret name] has been updated”
+        test('update secret', () => {
+
+        });
+
+        // Scenario: User deletes a secret entry
+        // Given that I am on the page “Manage Secret”
+        // When I click the Secret I want to delete
+        // And click “Delete”
+        // And click “Confirm”
+        // Then I should see a message “[secret name] has been deleted”
+        test('delete secret', () => {
+
+        });
+
+        //endof CRUD Ops Tests
+    })
+
+    // Feature: Secret Entry Filtering
+    // Description: Filter secrets by date range
+    //   By choosing a start and end date, only secrets created on dates within the range are shown in the table.
     describe('SecretManager Date Filter Tests', () => {
+
+        /*<SecretTable
+            page_size={SECRET_TABLE_PAGE_SIZE}
+            numPages={numPages}
+            maxNavButtons={SECRET_TABLE_MAX_NAV_BUTTONS}
+            rows={rows}
+            currPage={currPage}
+            setCurrPage={setCurrPage}
+        />*/
 
         // Scenario: A user filters by date to view the only secret they have
         // Given I have one secret
@@ -34,7 +113,7 @@ describe('SecretManager Tests', () => {
                 list_of_trs.length
             ).toBe(2)
 
-            // Check if the Walmart td exists
+            // Check if the Walmart td exists by looping through each td and checking if they have Walmart text
             // I've learned through doing this, that this is just a more complicated way of doing getByText
             // In other instances, this allows to find things like href and that, which is useful
             // But here it's useless
@@ -105,7 +184,7 @@ describe('SecretManager Tests', () => {
             // Check if the last possible secret which should be on the first page is shown
             expect(screen.getByText("Walmart10")).toBeInTheDocument();
 
-            // Check if there is no Walmart secret shown
+            // Check if there is no Walmart11 secret shown (since it should be one the second page)
             expect(screen.queryByText("Walmart11")).toBeNull();
 
             // Check if the list of table entries is length 11 (since length includes the column name row)
@@ -125,6 +204,8 @@ describe('SecretManager Tests', () => {
             //expect(screen.getByText("Walmart11")).toBeInTheDocument(); <-- can't do this, because React Testing sucks
         })
 
+        // endof Date Filter Tests
     })
 
+    // endof SecretManager tests
 })

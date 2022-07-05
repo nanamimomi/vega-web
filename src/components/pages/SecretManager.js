@@ -70,6 +70,9 @@ const SecretManager = () => {
 
   const openEditModal = (s) => {
     setSelectedSecret(s);
+    setEditSecretName(s.secretName);
+    setEditSecretText(s.content);
+    setEditSecretFile(s.file)
     setSecretEditModalVisible(true);
   };
 
@@ -116,16 +119,13 @@ const SecretManager = () => {
 
   const handleSecretEditSubmission = (evt) => {
     evt.preventDefault();
-    let secret = {
-        "secretName": editSecretName,
-        "dateCreated": new Date().toJSON(),
-        "text": editSecretText,
-    }
-    updateSecret(secret).then((res) => {
-        console.log("Response:", res);
-    })
+
+    updateSecret(selectedSecret, editSecretName, editSecretText, user.jwt)
+        .then((res) => console.log("Response:", res))
+        .then(() => getAllSecrets(user.jwt))
+        .then(setSecrets)
+        .catch(() => {});
     closeEditModal();
-      getAllSecrets(user.jwt).then(setSecrets).catch(e => {});
   }
 
   const handleCancelSecretEdit = (evt) => {
@@ -190,6 +190,9 @@ const SecretManager = () => {
         </Modal>
         <Modal isVisible={isSecretEditModalVisible}>
             <SecretEditForm
+                name={editSecretName}
+                text={editSecretText}
+                file={editSecretFile}
                 setName={setEditSecretName}
                 setText={setEditSecretText}
                 setFile={setEditSecretFile}

@@ -1,7 +1,7 @@
 import React from "react";
 import {Button, Form} from "react-bootstrap";
 
-const SecretEditForm = ({setName, setText, setFile, handleSubmit, handleCancel}) => {
+const SecretEditForm = ({name, text, file, setName, setText, setFile, handleSubmit, handleCancel}) => {
     return (
         <div>
             <h2>Edit Secret</h2>
@@ -11,6 +11,7 @@ const SecretEditForm = ({setName, setText, setFile, handleSubmit, handleCancel})
                     <Form.Control
                         as={"input"}
                         type={"text"}
+                        value={name}
                         onChange={(e) => setName(e.target.value)}
                     />
                 </Form.Group>
@@ -19,6 +20,7 @@ const SecretEditForm = ({setName, setText, setFile, handleSubmit, handleCancel})
                     <Form.Control
                         as={"textarea"}
                         rows={5}
+                        value={text}
                         onChange={(e) => setText(e.target.value)}
                     />
                 </Form.Group>
@@ -27,6 +29,7 @@ const SecretEditForm = ({setName, setText, setFile, handleSubmit, handleCancel})
                     <Form.Control
                         as={"input"}
                         type={"file"}
+                        value={file}
                         onChange={(e) => setFile(e.target.files[0])}
                     />
                 </Form.Group>

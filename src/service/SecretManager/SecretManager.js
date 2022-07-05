@@ -10,13 +10,13 @@ export function getAllSecrets(token) {
 }
 
 export function createSecret(secret, token) {
+    console.log(process.env.REACT_APP_API_URL + "/api/venus/secrets/create")
     return doPost(process.env.REACT_APP_API_URL + "/api/venus/secrets/create", secret, token)
 }
 
-export function updateSecret(secret) {
+export function updateSecret(secret, name, content, token) {
     // TODO: actually update the secret
-    console.log("Attempting to update secret", secret);
-    return Promise.resolve("Secret Updated Successfully");
+    return doPost(process.env.REACT_APP_API_URL + "/api/venus/secrets/update", {name, text:content, secret}, token)
 }
 
 export function deleteSecret(secret) {

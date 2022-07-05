@@ -5,9 +5,9 @@ const UserContext = createContext({
   logout: () => {}
 });
 
-const UserProvider = ({children}) => {
+const UserProvider = ({children, the_user = { username: '', jwt:'' , role: ''}}) => {
 	// User is the name of the "data" that gets stored in context
-  	const [user, setUser] = useState({ username: '', jwt:'' , role: ''});
+  	const [user, setUser] = useState(the_user);
 
   	useEffect(() => {
       const username =  window.localStorage.getItem("username");

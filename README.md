@@ -15,8 +15,8 @@ All the images that are used in frontend applcation will be found under src/asse
 React frontend talks to backend which is written in nodejs "express.js". All the source code is under server folder.
 
 To start the application, run below command in the terminal.
-
-`npm start`
+"docker-compose build"
+"docker-compose up"
 
 This will deploy the application at port 8000. The same configuration you can find in the file named "index.js" under the server folder. All the depedecies are declared in the package.json file. 
 

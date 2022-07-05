@@ -1,6 +1,6 @@
 import express from "express";
 import fileUpload from "express-fileupload";
-import {getAllSecrets, createSecret, deleteSecret} from "../services/SecretManagerAPI.js";
+import {getAllSecrets, createSecret, deleteSecret, updateSecret} from "../services/SecretManagerAPI.js";
 
 let router = express();
 
@@ -37,6 +37,19 @@ router.delete("/delete", (req, res) => {
     const id = req.query.ID;
     console.log("attempting to delete secret with id:", id);
     deleteSecret(process.env.API_URL + "/venus/secrets/delete?ID=" + id, req.headers)
+        .then(response => {
+            console.log("Response:", response);
+            res.send(response);
+        })
+        .catch((error) => {
+            console.log("ERROR:", error);
+            res.send(error);
+        })
+})
+
+router.post("/update", (req, res) => {
+    console.log("Attempting to update secret");
+    updateSecret(process.env.API_URL + "/venus/secrets/update", req.body, req.headers)
         .then(response => {
             console.log("Response:", response);
             res.send(response);

@@ -119,8 +119,12 @@ const SecretManager = () => {
 
   const handleSecretEditSubmission = (evt) => {
     evt.preventDefault();
-
-    updateSecret(selectedSecret, editSecretName, editSecretText, user.jwt)
+    let secret = {
+        "name": editSecretName,
+        "text": editSecretText,
+        "uuid": selectedSecret.secretID
+    }
+    updateSecret(secret, user.jwt)
         .then((res) => console.log("Response:", res))
         .then(() => getAllSecrets(user.jwt))
         .then(setSecrets)

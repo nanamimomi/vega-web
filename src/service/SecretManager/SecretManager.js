@@ -14,9 +14,8 @@ export function createSecret(secret, token) {
     return doPost(process.env.REACT_APP_API_URL + "/api/venus/secrets/create", secret, token)
 }
 
-export function updateSecret(secret, name, content, token) {
-    // TODO: actually update the secret
-    return doPost(process.env.REACT_APP_API_URL + "/api/venus/secrets/update", {name, text:content, secret}, token)
+export function updateSecret(secret, token) {
+    return doPost(process.env.REACT_APP_API_URL + "/api/venus/secrets/update", secret, token);
 }
 
 export function deleteSecret(id, token) {

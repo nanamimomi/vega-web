@@ -28,8 +28,8 @@ const SecretManager = () => {
         getAllSecrets(user.jwt).then(setSecrets).catch(e => {});
     }, [user]);
     const displayedSecrets = secrets
-        .filter((s) => startDate <= s.date && s.date <= endDate)
-        .sort((a, b) => b.date - a.date)
+        .filter((s) => startDate <= s.dateCreated && s.dateCreated <= endDate)
+        .sort((a, b) => b.dateCreated - a.dateCreated)
     const numPages = Math.max(1, Math.ceil(displayedSecrets.length / SECRET_TABLE_PAGE_SIZE));
     const [currPage, setCurrPage] = useState(1);
     if(currPage > numPages) {
@@ -38,19 +38,19 @@ const SecretManager = () => {
 
   const [newSecretName, setNewSecretName] = useState(null);
   const [newSecretText, setNewSecretText] = useState(null);
-  const [newSecretFiles, setNewSecretFiles] = useState([]);
+  const [newSecretFile, setNewSecretFile] = useState(null);
   const newSecretFileFormData = new FormData();
-  for(let i = 0; i < newSecretFiles.length; i++) {
-      newSecretFileFormData.append("file", newSecretFiles[i]);
+  if(newSecretFile) {
+      newSecretFileFormData.append("file", newSecretFile[0]);
   }
 
   const [isSecretCreationModalVisible, setSecretCreationModalVisible] = useState(false);
   const [editSecretName, setEditSecretName] = useState(null);
   const [editSecretText, setEditSecretText] = useState(null);
-  const [editSecretFiles, setEditSecretFiles] = useState([]);
+  const [editSecretFile, setEditSecretFile] = useState(null);
   const editSecretFileFormData = new FormData();
-  for(let i = 0; i < editSecretFiles.length; i++) {
-    editSecretFileFormData.append("file", editSecretFiles[i]);
+  if(editSecretFile) {
+      editSecretFileFormData.append("file", editSecretFile[0]);
   }
 
   const [isSecretEditModalVisible, setSecretEditModalVisible] = useState(false);
@@ -99,16 +99,14 @@ const SecretManager = () => {
     evt.preventDefault();
     let secret = {
         "name": newSecretName,
-        "date": new Date().toJSON(),
         "text": newSecretText,
-        "files": newSecretFileFormData
     }
-    createSecret(secret).then((res) => {
-        console.log("Response:", res);
-    })
+    createSecret(secret, user.jwt)
+        .then((res) => {console.log("Response:", res);})
+        .then(() => getAllSecrets(user.jwt))
+        .then(setSecrets)
+        .catch(e => {});
     closeSecretCreationModal();
-      getAllSecrets(user.jwt).then(setSecrets).catch(e => {});
-
   }
 
   const handleCancelSecretCreation = (evt) => {
@@ -119,10 +117,9 @@ const SecretManager = () => {
   const handleSecretEditSubmission = (evt) => {
     evt.preventDefault();
     let secret = {
-        "name": editSecretName,
-        "date": new Date().toJSON(),
+        "secretName": editSecretName,
+        "dateCreated": new Date().toJSON(),
         "text": editSecretText,
-        "files": editSecretFileFormData
     }
     updateSecret(secret).then((res) => {
         console.log("Response:", res);
@@ -139,7 +136,7 @@ const SecretManager = () => {
   const handleSecretDeletion = (evt) => {
     evt.preventDefault();
     let secret = {
-      "id": selectedSecret.id
+      "id": selectedSecret.secretID
     };
     deleteSecret(secret).then(res => {console.log("Response:", res);});
     closeDeleteModal();
@@ -156,7 +153,7 @@ const SecretManager = () => {
       closeSecretDetailsModal();
   }
 
-  const rows = secrets.map(
+  const rows = displayedSecrets.map(
       (secret) => (
           <SecretTableRow
               secret={secret}
@@ -186,7 +183,7 @@ const SecretManager = () => {
             <SecretCreationForm
                 setName={setNewSecretName}
                 setText={setNewSecretText}
-                setFiles={setNewSecretFiles}
+                setFile={setNewSecretFile}
                 handleSubmit={handleNewSecretSubmission}
                 handleCancel={handleCancelSecretCreation}
             />
@@ -195,7 +192,7 @@ const SecretManager = () => {
             <SecretEditForm
                 setName={setEditSecretName}
                 setText={setEditSecretText}
-                setFiles={setEditSecretFiles}
+                setFile={setEditSecretFile}
                 handleSubmit={handleSecretEditSubmission}
                 handleCancel={handleCancelSecretEdit}
             />

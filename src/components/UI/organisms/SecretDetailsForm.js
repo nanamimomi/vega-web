@@ -12,7 +12,7 @@ const SecretDetailsForm = ({secret, handleClose}) => {
                         as={"input"}
                         type={"text"}
                         disabled
-                        value={secret.name}
+                        value={secret.secretName}
                     />
                 </Form.Group>
                 <Form.Group className={"mb-3"} controlId={"secretCreationForm.SecretTextArea"}>
@@ -21,10 +21,9 @@ const SecretDetailsForm = ({secret, handleClose}) => {
                         as={"textarea"}
                         rows={5}
                         disabled
-                        value={secret.text}
+                        value={secret.content}
                     />
                 </Form.Group>
-                {secret.files.getAll("file").map((file) => <a href={URL.createObjectURL(file)} download style={{display: "block"}}>{file.name}</a>)}
                 <Button
                     variant={"primary"}
                     type={"submit"}

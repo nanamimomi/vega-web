@@ -1,6 +1,6 @@
 import express from "express";
 import fileUpload from "express-fileupload";
-import {getAllSecrets} from "../services/SecretManagerAPI.js";
+import {getAllSecrets, createSecret} from "../services/SecretManagerAPI.js";
 
 let router = express();
 
@@ -17,6 +17,19 @@ router.get("/all", (req, res) => {
             console.log("ERROR:", error);
             res.send(error);
         });
+});
+
+router.post("/create", (req, res) => {
+    console.log("Attempting to create secret:", req.body);
+    createSecret(process.env.API_URL + "/venus/secrets/create", req.body, req.headers)
+        .then(response => {
+            console.log("Response:", response);
+            res.send(response);
+        })
+        .catch((error) => {
+            console.log("ERROR:", error);
+            res.send(error);
+        })
 });
 
 export default router;

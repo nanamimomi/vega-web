@@ -1,7 +1,7 @@
 import React from "react";
 import {Button, Form} from "react-bootstrap";
 
-const SecretEditForm = ({setName, setText, setFiles, handleSubmit, handleCancel}) => {
+const SecretEditForm = ({setName, setText, setFile, handleSubmit, handleCancel}) => {
     return (
         <div>
             <h2>Edit Secret</h2>
@@ -27,8 +27,7 @@ const SecretEditForm = ({setName, setText, setFiles, handleSubmit, handleCancel}
                     <Form.Control
                         as={"input"}
                         type={"file"}
-                        multiple
-                        onChange={(e) => setFiles(e.target.files)}
+                        onChange={(e) => setFile(e.target.files[0])}
                     />
                 </Form.Group>
                 <Button

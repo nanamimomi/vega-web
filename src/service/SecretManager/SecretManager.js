@@ -1,13 +1,16 @@
-import {doGet} from "../BaseAPI";
+import {doGet, doPost} from "../BaseAPI";
 
 export function getAllSecrets(token) {
-    return doGet(process.env.REACT_APP_API_URL + "/api/venus/secrets/all", token);
+    return doGet(process.env.REACT_APP_API_URL + "/api/venus/secrets/all", token)
+        .then((secrets) => {
+            secrets.map((secret) => secret.dateCreated = new Date(secret.dateCreated));
+            console.log("All secrets:", secrets)
+            return secrets;
+        });
 }
 
-export function createSecret(secret) {
-    // TODO: actually make the secret
-    console.log("Attempting to create secret", secret);
-    return Promise.resolve("Secret Created Successfully");
+export function createSecret(secret, token) {
+    return doPost(process.env.REACT_APP_API_URL + "/api/venus/secrets/create", secret, token)
 }
 
 export function updateSecret(secret) {

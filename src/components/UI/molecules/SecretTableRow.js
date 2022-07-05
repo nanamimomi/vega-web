@@ -4,9 +4,9 @@ import {toHumanReadable} from "../../../utils/Dates";
 
 const SecretTableRow = ({ secret, handleShow, handleEdit, handleDelete }) => {
   return (
-    <tr key={secret.id}>
-      <td>{secret.name}</td>
-      <td>{toHumanReadable(secret.date)}</td>
+    <tr key={secret.secretID}>
+      <td>{secret.secretName}</td>
+      <td>{toHumanReadable(secret.dateCreated)}</td>
       <td>
         <Button
             variant={"primary"}

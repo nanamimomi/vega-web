@@ -5,7 +5,7 @@ const SecretDeletionForm = ({secret, handleSubmit, handleCancel}) => {
     return (
         <div>
             <h2>Delete Secret</h2>
-            <p>Are you sure you want to permanently delete "{secret.name}"?</p>
+            <p>Are you sure you want to permanently delete "{secret.secretName}"?</p>
             <Button
                 variant={"primary"}
                 type={"reset"}

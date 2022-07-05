@@ -1,8 +1,8 @@
 import fetch from 'node-fetch';
 import Promise from 'promise';
 
-export async function doPost(url, data){
-	const response = await fetch(url, createRequestOptions('POST', data));
+export async function doPost(url, data, token){
+	const response = await fetch(url, createRequestOptions('POST', data, token));
 	return await handleResponse(response);
 }
 

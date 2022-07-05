@@ -21,8 +21,6 @@ describe('UI-test tutorial', () => {
     user.type(usernameInput, "admin@venus.com");
     user.type(passwordInput, "pass");
     user.click(submitButton);
-    // const admin_navbar = screen.getByRole("navbar", {name: "Submit"});
-    // expect(admin_navbar).toHaveTextContent("Admin");
   })
 
   //Scenario: User provides incorrect credentials.

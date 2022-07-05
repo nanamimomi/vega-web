@@ -3,7 +3,7 @@ import {Button, Form} from "react-bootstrap";
 
 const SecretCreationForm = ({setName, setText, setFile, handleSubmit, handleCancel}) => {
     return (
-        <div>
+        <div data-testid = "create-id">
             <h2>New Secret</h2>
             <Form>
                 <Form.Group className={"mb-3"} controlId={"secretCreationForm.SecretNameInput"}>

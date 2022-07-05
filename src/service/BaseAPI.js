@@ -48,6 +48,16 @@ export async function doPost(url, data, token) {
   return await handleResponse(response);
 }
 
+export async function doDelete(url, token) {
+    const response = await fetch(url, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': 'Bearer '+token
+        }
+    });
+    return await handleResponse(response);
+}
+
 export async function doPostFile(url, data, token) {
   console.log(getUserToken());
   console.debug('Request data:', data);

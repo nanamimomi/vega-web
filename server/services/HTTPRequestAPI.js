@@ -11,6 +11,11 @@ export async function doGet(url, token){
   return await handleResponse(response);
 }
 
+export async function doDelete(url, token) {
+    const response = await fetch(url, createRequestOptions('DELETE', undefined, token));
+    return await handleResponse(response);
+}
+
 export async function doPostFile(url, data, headers){
   const response = await fetch(url, createRequestOptionsForFile('POST', data, headers));
   return await handleResponse(response);

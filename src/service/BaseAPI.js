@@ -12,6 +12,9 @@ export async function handleResponse(response, isBlob = false) {
     result = handleResult(await response.text());
   }
   if (response.ok) {
+    if(result.errno || result.code) {
+      return Promise.reject(result);
+    }
     return result;
   }
   // handle error

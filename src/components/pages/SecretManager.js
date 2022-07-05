@@ -1,43 +1,40 @@
-import React, { useState } from "react";
+import React, {useContext, useState, useEffect} from "react";
 import SimplePageLayout from "../templates/SimplePageLayout";
 import DateTimeRangePicker from "../UI/molecules/DateTimeRangePicker";
 import SecretTable from "../UI/organisms/SecretTable";
 import SecretTableRow from "../UI/molecules/SecretTableRow";
-import { getAllSecrets } from "../../service/SecretManager/SecretManager";
+import { getAllSecrets, createSecret, updateSecret, deleteSecret } from "../../service/SecretManager/SecretManager";
 import Modal from "../UI/atoms/Modal";
 import SecretCreationForm from "../UI/organisms/SecretCreationForm";
 import SecretEditForm from "../UI/organisms/SecretEditForm";
 import SecretDeletionForm from "../UI/organisms/SecretDeletionForm";
 import SecretDetailsForm from "../UI/organisms/SecretDetailsForm";
-import { createSecret, updateSecret, deleteSecret } from "../../service/SecretManager/SecretManager";
+import {UserContext} from "../../auth/UserProvider";
 
 const SECRET_TABLE_PAGE_SIZE = 10;
 const SECRET_TABLE_MAX_NAV_BUTTONS = 5;
 
 const SecretManager = () => {
-  const currDate = new Date();
-  const oneMonthAgo = new Date();
-  oneMonthAgo.setMonth(currDate.getMonth() - 1);
-  const [endDate, setEndDate] = useState(currDate);
-  const [startDate, setStartDate] = useState(oneMonthAgo);
+    const currDate = new Date();
+    const oneMonthAgo = new Date();
+    oneMonthAgo.setMonth(currDate.getMonth() - 1);
+    const [endDate, setEndDate] = useState(currDate);
+    const [startDate, setStartDate] = useState(oneMonthAgo);
 
-  const getDisplayedSecrets = (start, end) => {
-    return getAllSecrets()
-      .filter((s) => start <= s.date && s.date <= end)
-      .sort((a, b) => b.date - a.date);
-  };
+    const {user} = useContext(UserContext)
 
-  const secrets = getDisplayedSecrets(startDate, endDate);
-
-  const numPages = Math.max(
-    1,
-    Math.ceil(secrets.length / SECRET_TABLE_PAGE_SIZE)
-  );
-
-  const [currPage, setCurrPage] = useState(1);
-  if (currPage > numPages) {
-    setCurrPage(numPages);
-  }
+    const [secrets, setSecrets] = useState([]);
+    useEffect(() => {
+        getAllSecrets(user.jwt).then(setSecrets).catch(e => {});
+    }, [user]);
+    const displayedSecrets = secrets
+        .filter((s) => startDate <= s.date && s.date <= endDate)
+        .sort((a, b) => b.date - a.date)
+    const numPages = Math.max(1, Math.ceil(displayedSecrets.length / SECRET_TABLE_PAGE_SIZE));
+    const [currPage, setCurrPage] = useState(1);
+    if(currPage > numPages) {
+        setCurrPage(numPages);
+    }
 
   const [newSecretName, setNewSecretName] = useState(null);
   const [newSecretText, setNewSecretText] = useState(null);
@@ -110,6 +107,8 @@ const SecretManager = () => {
         console.log("Response:", res);
     })
     closeSecretCreationModal();
+      getAllSecrets(user.jwt).then(setSecrets).catch(e => {});
+
   }
 
   const handleCancelSecretCreation = (evt) => {
@@ -129,6 +128,7 @@ const SecretManager = () => {
         console.log("Response:", res);
     })
     closeEditModal();
+      getAllSecrets(user.jwt).then(setSecrets).catch(e => {});
   }
 
   const handleCancelSecretEdit = (evt) => {
@@ -143,6 +143,7 @@ const SecretManager = () => {
     };
     deleteSecret(secret).then(res => {console.log("Response:", res);});
     closeDeleteModal();
+      getAllSecrets(user.jwt).then(setSecrets).catch(e => {});
   }
 
   const handleCancelSecretDeletion = (evt) => {

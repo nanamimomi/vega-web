@@ -1,5 +1,6 @@
 import { React, useState } from "react";
 import { Button } from "react-bootstrap";
+import {toHumanReadable} from "../../../utils/Dates";
 
 const SecretEntry = ({ secret }) => {
   const [active, setActive] = useState(false);
@@ -17,13 +18,24 @@ const SecretEntry = ({ secret }) => {
   );
 };
 
-const SecretTableRow = ({ name, id, date, secret, openDeleteModal }) => {
+const SecretTableRow = ({ name, id, date, secret, openEditModal, openDeleteModal }) => {
   return (
     <tr key={id}>
       <td>{name}</td>
-      <td>{date.toLocaleDateString()}</td>
+      <td>{toHumanReadable(date)}</td>
       <td>
         <SecretEntry secret={secret} />
+      </td>
+      <td>
+        <Button
+          variant="warning"
+          style={{ float: "right" }}
+          onClick={() => {
+            openEditModal({ name, id, date, secret });
+          }}
+        >
+          Edit
+        </Button>
       </td>
       <td>
         <Button

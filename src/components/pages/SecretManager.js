@@ -100,9 +100,10 @@ const SecretManager = () => {
 
   const handleNewSecretSubmission = (evt) => {
     evt.preventDefault();
-    let secret = {
+    const secret = {
         "name": newSecretName,
         "text": newSecretText,
+        "owner": user.username,
     }
     createSecret(secret, user.jwt)
         .then((res) => {console.log("Response:", res);})
@@ -119,7 +120,7 @@ const SecretManager = () => {
 
   const handleSecretEditSubmission = (evt) => {
     evt.preventDefault();
-    let secret = {
+    const secret = {
         "name": editSecretName,
         "text": editSecretText,
         "uuid": selectedSecret.secretID

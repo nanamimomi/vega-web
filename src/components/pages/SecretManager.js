@@ -25,7 +25,7 @@ const SecretManager = () => {
 
     const [secrets, setSecrets] = useState([]);
     useEffect(() => {
-        getAllSecrets(user.jwt).then(setSecrets).catch(e => {});
+        getAllSecrets(user.username, user.jwt).then(setSecrets).catch(e => {});
     }, [user]);
     const displayedSecrets = secrets
         .filter((s) => startDate <= s.dateCreated && s.dateCreated <= endDate)
@@ -107,7 +107,7 @@ const SecretManager = () => {
     }
     createSecret(secret, user.jwt)
         .then((res) => {console.log("Response:", res);})
-        .then(() => getAllSecrets(user.jwt))
+        .then(() => getAllSecrets(user.username, user.jwt))
         .then(setSecrets)
         .catch(e => {});
     closeSecretCreationModal();
@@ -127,7 +127,7 @@ const SecretManager = () => {
     }
     updateSecret(secret, user.jwt)
         .then((res) => console.log("Response:", res))
-        .then(() => getAllSecrets(user.jwt))
+        .then(() => getAllSecrets(user.username, user.jwt))
         .then(setSecrets)
         .catch(() => {});
     closeEditModal();
@@ -142,7 +142,7 @@ const SecretManager = () => {
     evt.preventDefault();
     deleteSecret(selectedSecret.secretID, user.jwt)
         .then((res) => {console.log("Response:", res);})
-        .then(() => getAllSecrets(user.jwt))
+        .then(() => getAllSecrets(user.username, user.jwt))
         .then(setSecrets)
         .catch(e => {});
     closeDeleteModal();

@@ -140,7 +140,7 @@ const SecretManager = () => {
 
   const handleSecretDeletion = (evt) => {
     evt.preventDefault();
-    deleteSecret(selectedSecret.secretID, user.jwt)
+    deleteSecret(user.username, selectedSecret.secretID, user.jwt)
         .then((res) => {console.log("Response:", res);})
         .then(() => getAllSecrets(user.username, user.jwt))
         .then(setSecrets)

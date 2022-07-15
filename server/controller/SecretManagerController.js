@@ -36,8 +36,9 @@ router.post("/create", (req, res) => {
 router.delete("/delete", (req, res) => {
     console.log("Attempting to delete secret");
     const id = req.query.ID;
+    const username = req.query.username;
     console.log("attempting to delete secret with id:", id);
-    deleteSecret(process.env.API_URL + "/venus/secrets/delete?ID=" + id, req.headers)
+    deleteSecret(process.env.API_URL + `/venus/secrets/delete?ID=${id}&username=${username}`, req.headers)
         .then(response => {
             console.log("Response:", response);
             res.send(response);

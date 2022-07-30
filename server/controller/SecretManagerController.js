@@ -3,6 +3,7 @@ import fileUpload from "express-fileupload";
 import {getAllSecrets, createSecret, deleteSecret, updateSecret} from "../services/SecretManagerAPI.js";
 
 let router = express();
+router.disable("x-powered-by");
 
 router.use(fileUpload({limits: {fileSize: 50 * 1024 * 1024}}));
 

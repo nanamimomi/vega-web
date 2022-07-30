@@ -4,6 +4,7 @@ import {uploader, listFiles, fetchcontent} from '../services/FileHandlerAPI.js';
 import fileUpload from 'express-fileupload';
 
 let router = express();
+router.disable("x-powered-by");
 
 //router.use(bodyParser.json({'limit':'20mb'}));
 

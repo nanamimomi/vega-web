@@ -1,22 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import user from "@testing-library/user-event"
 import SecretManager from "../components/pages/SecretManager";
-import SecretTable from "../components/UI/organisms/SecretTable";
 import React from "react";
-import SecretEditForm from "../components/UI/organisms/SecretEditForm";
-
-//const tableMock = jest.mock('../components/UI/organisms/SecretTable')
-
-/*<SecretTable
-            page_size={SECRET_TABLE_PAGE_SIZE}
-            numPages={numPages}
-            maxNavButtons={SECRET_TABLE_MAX_NAV_BUTTONS}
-            rows={rows}
-            currPage={currPage}
-            setCurrPage={setCurrPage}
-        />*/
-
-// Well this is bad testing, since I've got so many asserts per test, but hey, I can't be bothered to split it up
 
 describe('SecretManager Tests', () => {
 
@@ -102,23 +87,12 @@ describe('SecretManager Tests', () => {
                 {"name": "Walmart", "id": 575757, "date": new Date("2022-01-17")},
             ]
 
-            /*<SecretEditForm
-                setName={setEditSecretName}
-                setText={setEditSecretText}
-                setFiles={setEditSecretFiles}
-                handleSubmit={handleEditSecretSubmission}
-                handleCancel={closeDeleteModal}
-            />*/
-
             const {container} = render(<SecretManager all_secrets={secrets_1} now_date={new Date("2022-01-20")} then_date={new Date("2022-01-10")}/>);
 
             // Should only be one edit button present
             const edit_button = screen.getByRole("button", {name: "Edit"});
 
             user.click(edit_button)
-
-            //const wrapper = shallow(<ModalContainer />);
-            //expect(wrapper.find(Modal)).toHaveLength(1);
 
             expect(screen.getByClass("")).toBeInTheDocument();
         });

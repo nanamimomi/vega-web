@@ -17,7 +17,6 @@ export async function handleResponse(response, isBlob = false) {
     }
     return result;
   }
-  // handle error
   return Promise.reject({
     code: response.status,
     message: result && result.message ? result.message : response.statusText

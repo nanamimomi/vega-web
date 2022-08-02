@@ -3,20 +3,6 @@ import user from "@testing-library/user-event"
 import VenusNavBar from "../components/UI/molecules/VenusNavBar";
 import {UserProvider} from "../auth/UserProvider";
 
-//const loginMock = jest.mock('../components/pages/Login')
-//const loginSpy = jest.spyOn(Login, "onSubmit");
-/*const userContextMock = jest.mock('../auth/UserProvider.js', () => {
-  return {
-    UserProvider: null,
-    UserContext: null
-  }
-})*/
-/*const LoggedInUserContext = createContext({
-      user :'',
-      setUserInfo: () => {},
-      logout: () => {}
-});*/
-
 const VISITOR_USER = {
   username: "user",
   jwt: "blah",
@@ -82,7 +68,6 @@ describe('Venus Navigation Bar Tests', () => {
   // When I visit any page
   // Then the "Manage secrets"
   test('logged in but not user', () => {
-    //const {container} = RenderWrapper(<Leadership />, VISITOR_USER)
     const {container} = renderNavBar(VISITOR_STAFF)
 
     expect(screen.queryByText("Manage secrets")).toBeNull()

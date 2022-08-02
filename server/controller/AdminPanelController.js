@@ -3,8 +3,7 @@ import express from 'express';
 import {fetchusers, enableAccount, changeRole} from '../services/AdminPanelAPI.js';
 import fileUpload from 'express-fileupload';
 
-let router = express();
-router.disable("x-powered-by");
+let router = express.Router();
 
 //router.use(bodyParser.json({'limit':'20mb'}));
 

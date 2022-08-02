@@ -8,7 +8,6 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 
 const app = express();
-app.disable("x-powered-by");
 const port = 8000;
 const env = config();
 
@@ -39,8 +38,8 @@ app.use("/api/login", auth);
 app.use("/api/venus", fileUploader)
 app.use("/api/venus/admin", adminPanel)
 app.use("/api/venus/secrets", secretsManager)
-
 app.listen(port, () => {
   console.log("API_URL", process.env.API_URL);
   console.log(`Example app listening on port ${port}!`)
 });
+app.disable('x-powered-by'); 

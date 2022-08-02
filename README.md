@@ -1,24 +1,20 @@
+## Startup
+
+```console
+foo@bar:~$ MODE=<development|production> docker-compose up --build
+```
+
 ## Frontend
 
-Frontend is written using React framework. To start the application use below command.
-
-`npm start`
-
-This will deploy the applciation at 3000 port. 
+The frontend is written in React and served on port 3000. 
 
 ## Images
 
-All the images that are used in frontend applcation will be found under src/assets/images folder.
+All the images that are used in the frontend application will be found under src/assets/images folder.
 
 ## Server
 
-React frontend talks to backend which is written in nodejs "express.js". All the source code is under server folder.
-
-To start the application, run below command in the terminal.
-"docker-compose build"
-"docker-compose up"
-
-This will deploy the application at port 8000. The same configuration you can find in the file named "index.js" under the server folder. All the depedecies are declared in the package.json file. 
+React frontend talks to backend which is written in nodejs "express.js". All the source code is under server folder.  The server is deployed to port 8000.
 
 ## Type of users (for login) 
 - Public (can see only the public site)

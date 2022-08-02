@@ -13,6 +13,8 @@ services:
   vega-web-frontend:
     build:
       context: ./
+      args:
+        MODE: ${MODE}
     image: "venus/theswitch"
     networks:
       - vega-web-backend-net

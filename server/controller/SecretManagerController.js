@@ -6,9 +6,10 @@ let router = express();
 
 router.use(fileUpload({limits: {fileSize: 50 * 1024 * 1024}}));
 
-router.get("/all", (req, res) => {
+router.post("/all", (req, res) => {
     console.log("Entered into all secrets");
-    getAllSecrets(process.env.API_URL + "/venus/secrets/all", req.headers)
+    console.log(req.body);
+    getAllSecrets(process.env.API_URL + "/venus/secrets/all", req.body, req.headers)
         .then((response) => {
             console.log("Response:", response);
             res.send(response);
@@ -35,8 +36,9 @@ router.post("/create", (req, res) => {
 router.delete("/delete", (req, res) => {
     console.log("Attempting to delete secret");
     const id = req.query.ID;
+    const username = req.query.username;
     console.log("attempting to delete secret with id:", id);
-    deleteSecret(process.env.API_URL + "/venus/secrets/delete?ID=" + id, req.headers)
+    deleteSecret(process.env.API_URL + `/venus/secrets/delete?ID=${id}&username=${username}`, req.headers)
         .then(response => {
             console.log("Response:", response);
             res.send(response);

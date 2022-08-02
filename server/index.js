@@ -6,10 +6,26 @@ import express from 'express';
 import { config } from 'dotenv';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+import helmet from "helmet";
 
 const app = express();
 const port = 8000;
 const env = config();
+
+app.use(
+    helmet({
+        contentSecurityPolicy: {
+            directives: {
+                ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+                "default-src": ["'self'"],
+                "style-src": ["'self'"],
+                "font-src": ["'self'"],
+                "frame-ancestors": ["'self'"],
+                "form-action": ["'self'"],
+            },
+        },
+    })
+);
 
 //app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -38,6 +54,10 @@ app.use("/api/login", auth);
 app.use("/api/venus", fileUploader)
 app.use("/api/venus/admin", adminPanel)
 app.use("/api/venus/secrets", secretsManager)
+
+app.use((req, res, next) => {
+    res.json({message: "Page not found"});
+});
 
 app.listen(port, () => {
   console.log("API_URL", process.env.API_URL);

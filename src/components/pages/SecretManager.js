@@ -25,7 +25,11 @@ const SecretManager = () => {
 
     const [secrets, setSecrets] = useState([]);
     useEffect(() => {
-        getAllSecrets(user.username, user.jwt).then(setSecrets).catch(e => {});
+      console.log("A JCNEAUF");
+      const owner = {
+          "owner": user.username,
+      }
+        getAllSecrets(owner, user.jwt).then(setSecrets).catch(e => {});
     }, [user]);
     const displayedSecrets = secrets
         .filter((s) => startDate <= s.dateCreated && s.dateCreated <= endDate)
@@ -105,9 +109,12 @@ const SecretManager = () => {
         "text": newSecretText,
         "owner": user.username,
     }
+    const owner = {
+      "owner": user.username,
+    }
     createSecret(secret, user.jwt)
         .then((res) => {console.log("Response:", res);})
-        .then(() => getAllSecrets(user.username, user.jwt))
+        .then(() => getAllSecrets(owner, user.jwt))
         .then(setSecrets)
         .catch(e => {});
     closeSecretCreationModal();
@@ -125,9 +132,12 @@ const SecretManager = () => {
         "text": editSecretText,
         "uuid": selectedSecret.secretID
     }
+    const owner = {
+      "owner": user.username,
+  }
     updateSecret(secret, user.jwt)
         .then((res) => console.log("Response:", res))
-        .then(() => getAllSecrets(user.username, user.jwt))
+        .then(() => getAllSecrets(owner, user.jwt))
         .then(setSecrets)
         .catch(() => {});
     closeEditModal();
@@ -140,9 +150,12 @@ const SecretManager = () => {
 
   const handleSecretDeletion = (evt) => {
     evt.preventDefault();
+      const owner = {
+        "owner": user.username,
+    }
     deleteSecret(user.username, selectedSecret.secretID, user.jwt)
         .then((res) => {console.log("Response:", res);})
-        .then(() => getAllSecrets(user.username, user.jwt))
+        .then(() => getAllSecrets(owner, user.jwt))
         .then(setSecrets)
         .catch(e => {});
     closeDeleteModal();

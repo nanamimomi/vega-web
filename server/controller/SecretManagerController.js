@@ -6,10 +6,10 @@ let router = express();
 
 router.use(fileUpload({limits: {fileSize: 50 * 1024 * 1024}}));
 
-router.get("/all", (req, res) => {
+router.post("/all", (req, res) => {
     console.log("Entered into all secrets");
-    const username = req.query.username;
-    getAllSecrets(process.env.API_URL + "/venus/secrets/all?username=" + username, req.headers)
+    console.log(req.body);
+    getAllSecrets(process.env.API_URL + "/venus/secrets/all", req.body, req.headers)
         .then((response) => {
             console.log("Response:", response);
             res.send(response);

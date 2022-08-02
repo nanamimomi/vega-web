@@ -1,7 +1,7 @@
 import {doGet, doPost, doDelete} from "../BaseAPI";
 
-export function getAllSecrets(username, token) {
-    return doGet(process.env.REACT_APP_API_URL + `/api/venus/secrets/all?username=${username}`, token)
+export function getAllSecrets(owner, token) {
+    return doPost(process.env.REACT_APP_API_URL + "/api/venus/secrets/all", owner, token)
         .then((secrets) => {
             secrets.map((secret) => secret.dateCreated = new Date(secret.dateCreated));
             console.log("All secrets:", secrets)

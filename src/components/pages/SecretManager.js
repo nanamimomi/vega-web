@@ -150,10 +150,14 @@ const SecretManager = () => {
 
   const handleSecretDeletion = (evt) => {
     evt.preventDefault();
+    const data = {
+      "ID": selectedSecret.secretID,
+      "owner": user.username,
+  }
       const owner = {
         "owner": user.username,
     }
-    deleteSecret(user.username, selectedSecret.secretID, user.jwt)
+    deleteSecret(data, user.jwt)
         .then((res) => {console.log("Response:", res);})
         .then(() => getAllSecrets(owner, user.jwt))
         .then(setSecrets)

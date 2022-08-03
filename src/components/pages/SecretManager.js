@@ -25,7 +25,6 @@ const SecretManager = () => {
 
     const [secrets, setSecrets] = useState([]);
     useEffect(() => {
-      console.log("A JCNEAUF");
       const owner = {
           "owner": user.username,
       }

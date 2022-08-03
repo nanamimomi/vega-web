@@ -37,7 +37,6 @@ router.post("/delete", (req, res) => {
     console.log("Attempting to delete secret");
     deleteSecret(process.env.API_URL + "/venus/secrets/delete", req.body, req.headers)
         .then(response => {
-            console.log("Response:", response);
             res.send(response);
         })
         .catch((error) => {

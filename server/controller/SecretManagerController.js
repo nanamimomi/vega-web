@@ -6,10 +6,28 @@ let router = express();
 
 router.use(fileUpload({limits: {fileSize: 50 * 1024 * 1024}}));
 
+function sanitize(request) {
+    const safe_request = {};
+    const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#x27;',
+        "/": '&#x2F;',
+    };
+    const reg = /[&<>"'/]/ig;
+    for (const [key, value] of Object.entries(request)) {
+        safe_request[key] = value.replace(reg, (match) => map[match]);
+    }      
+    return safe_request;
+}
+
 router.post("/all", (req, res) => {
     console.log("Entered into all secrets");
     console.log(req.body);
-    getAllSecrets(process.env.API_URL + "/venus/secrets/all", req.body, req.headers)
+    const safe_request = sanitize(req.body);
+    getAllSecrets(process.env.API_URL + "/venus/secrets/all", safe_request, req.headers)
         .then((response) => {
             console.log("Response:", response);
             res.send(response);
@@ -22,7 +40,8 @@ router.post("/all", (req, res) => {
 
 router.post("/create", (req, res) => {
     console.log("Attempting to create secret:", req.body);
-    createSecret(process.env.API_URL + "/venus/secrets/create", req.body, req.headers)
+    const safe_request = sanitize(req.body);
+    createSecret(process.env.API_URL + "/venus/secrets/create", safe_request, req.headers)
         .then(response => {
             console.log("Response:", response);
             res.send(response);
@@ -35,7 +54,8 @@ router.post("/create", (req, res) => {
 
 router.post("/delete", (req, res) => {
     console.log("Attempting to delete secret");
-    deleteSecret(process.env.API_URL + "/venus/secrets/delete", req.body, req.headers)
+    const safe_request = sanitize(req.body);
+    deleteSecret(process.env.API_URL + "/venus/secrets/delete", safe_request, req.headers)
         .then(response => {
             res.send(response);
         })
@@ -47,7 +67,8 @@ router.post("/delete", (req, res) => {
 
 router.post("/update", (req, res) => {
     console.log("Attempting to update secret");
-    updateSecret(process.env.API_URL + "/venus/secrets/update", req.body, req.headers)
+    const safe_request = sanitize(req.body);
+    updateSecret(process.env.API_URL + "/venus/secrets/update", safe_request, req.headers)
         .then(response => {
             console.log("Response:", response);
             res.send(response);

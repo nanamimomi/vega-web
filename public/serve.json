@@ -1,0 +1,17 @@
+{
+  "headers": [
+    {
+      "source" : "**/*",
+      "headers" : [
+        {
+          "key" : "Content-Security-Policy",
+          "value" : "default-src 'self' http://127.0.0.1:8000/ http://localhost:8000/; frame-ancestors 'self' http://127.0.0.1:8000/ http://localhost:8000/; form-action 'self' http://127.0.0.1:8000/ http://localhost:8000/;"
+        },
+        {
+          "key" : "X-Content-Type-Options",
+          "value" : "nosniff"
+        }
+      ]
+    }
+  ]
+}

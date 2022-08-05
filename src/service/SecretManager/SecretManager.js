@@ -1,7 +1,7 @@
-import {doGet, doPost, doDelete} from "../BaseAPI";
+import {doPost} from "../BaseAPI";
 
-export function getAllSecrets(username, token) {
-    return doGet(process.env.REACT_APP_API_URL + `/api/venus/secrets/all?username=${username}`, token)
+export function getAllSecrets(owner, token) {
+    return doPost(process.env.REACT_APP_API_URL + "/api/venus/secrets/all", owner, token)
         .then((secrets) => {
             secrets.map((secret) => secret.dateCreated = new Date(secret.dateCreated));
             console.log("All secrets:", secrets)
@@ -18,7 +18,7 @@ export function updateSecret(secret, token) {
     return doPost(process.env.REACT_APP_API_URL + "/api/venus/secrets/update", secret, token);
 }
 
-export function deleteSecret(username, id, token) {
-    console.log("Attempting to delete secret with id:", id);
-    return doDelete(process.env.REACT_APP_API_URL + `/api/venus/secrets/delete?ID=${id}&username=${username}`, token);
+export function deleteSecret(data, token) {
+    console.log("Attempting to delete secret with id:", data.ID);
+    return doPost(process.env.REACT_APP_API_URL + "/api/venus/secrets/delete", data, token);
 }

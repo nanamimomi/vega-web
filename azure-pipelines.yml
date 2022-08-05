@@ -40,3 +40,5 @@ stages:
         tags: |
           latest
           $(tag)
+      env:
+        MODE: production
